@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView,TouchableOpacity } from 'react-native';
 import React from 'react';
 
 export default function DetallesViaje() {
@@ -11,9 +11,12 @@ export default function DetallesViaje() {
       <View style={styles.contenido}>
         <Text style={styles.titulo}>Ciudad de México</Text>
         <Text style={styles.descripcion}>
-        La Ciudad de México es uno de los destinos  más ricos y fascinantes del mundo, no solo por ser una de las tres  principales ciudades con el mayor número de museos.
+          La Ciudad de México es uno de los destinos más ricos y fascinantes del mundo, no solo por ser una de las tres principales ciudades con el mayor número de museos.
         </Text>
-        <Text style={styles.subtitulo}>Información del viaje</Text>
+        <View style={styles.contenedorTitulo}>
+          <Text style={styles.subtitulo}>Información del viaje</Text>
+          <View style={styles.lineaHorizontal}></View>
+        </View>
         <View style={styles.lista}>
           <Text style={styles.listaItem}>Origen: Cuernavaca </Text>
           <Text style={styles.listaItem}>Destino: Ciudad de Mexico</Text>
@@ -26,14 +29,24 @@ export default function DetallesViaje() {
         <View style={styles.lista}>
           <View style={styles.itemLista}>
             <View style={styles.circulo}></View>
+            <View style={styles.lineaVertical}></View>
             <Text style={styles.textoLista}>Paloma de la paz</Text>
           </View>
           <View style={styles.itemLista}>
             <View style={styles.circulo}></View>
+            <View style={styles.lineaVertical}></View>
             <Text style={styles.textoLista}>Walmart domingo diez</Text>
           </View>
-          {/* Agrega más elementos de lista según sea necesario */}
+          <View style={styles.itemLista}>
+            <View style={styles.circulo}></View>
+            <View style={styles.lineaVertical2}></View>
+            <Text style={styles.textoLista}>AV. Paseo de la Reforma CDMX</Text>
+          </View>
+          
         </View>
+        <TouchableOpacity style={styles.boton}>
+          <Text style={styles.textoBoton}>Adquirir boleto</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -57,32 +70,74 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   descripcion: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 10,
+  },
+  contenedorTitulo: {
+    alignItems: 'center',
+    position: 'relative', 
   },
   subtitulo: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
-    marginTop: 20,
-    color: 'red', 
+    marginTop: 30,
+    color: 'red',
+    backgroundColor: 'white', 
+    paddingVertical: 5, 
+    paddingHorizontal: 2, 
+    zIndex: 1,
+  },
+  lineaHorizontal: {
+    borderBottomColor: 'red', 
+    borderBottomWidth: 2,
+    width: '100%',
+    position: 'absolute',
+    top: '65%', 
   },
   lista: {
     marginLeft: 20,
   },
-  listaItem: {
+  itemLista: {
     fontSize: 16,
-    marginBottom: 5,
+    marginBottom: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   circulo: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: 'black', // Color del círculo
-    marginRight: 10, // Espacio entre el círculo y el texto
+    backgroundColor: 'black',
+    marginRight: 10,
   },
   textoLista: {
     fontSize: 16,
+  },
+
+  lineaVertical: {
+    width: 2,
+    height: 80,
+    backgroundColor: 'black',
+    position: 'absolute',
+    top: 6,
+    left: 4,
+  },
+  lineaVertical2:{
+   
+  },
+  boton: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
+    borderColor: '#3DD7FD',
+    borderWidth: 2,
+  },
+  textoBoton: {
+    color: '#3DD7FD',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });

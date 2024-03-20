@@ -23,16 +23,16 @@ const HomeStack = () => {
             />
             <Stack.Screen
                 name="DetallesViaje"
-                component={DetallesViaje} // Asigna la pantalla de detalles del viaje como componente
+                component={DetallesViaje} 
                 options={{
-                    title: 'Detalles del Viaje', // Puedes personalizar el título de la pantalla de detalles del viaje aquí
+                    title: 'Detalles del Viaje', 
                     headerStyle: {
                         backgroundColor: '#fd1400'
                     },
                     headerTitleStyle: {
                         color: 'white'
                     },
-                    headerTintColor: 'white' // Cambia el color del botón de retroceso
+                    headerTintColor: 'white' 
                 }}
             />
         </Stack.Navigator>

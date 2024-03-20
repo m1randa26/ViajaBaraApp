@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     elevation: 4,
+   
   },
   tituloViaje: {
     fontSize: 18,

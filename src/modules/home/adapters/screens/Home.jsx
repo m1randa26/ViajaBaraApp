@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'; // Importa TouchableOpacity
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'; 
 
-export default function Home({ navigation }) { // Asegúrate de pasar 'navigation' como una prop
+export default function Home({ navigation }) { 
 
   const usuario = {
     nombre: 'Enrique Copado',
@@ -23,7 +23,6 @@ export default function Home({ navigation }) { // Asegúrate de pasar 'navigatio
     {  titulo: 'Cuernava-CDMX', subtitulo:'Salida:12:00PM           Horarios:LMMJVSD' },
   ];
 
-  // Función para manejar la navegación a la pantalla de detalles del viaje
   const navigateToDetallesViaje = () => {
     navigation.navigate('DetallesViaje');
   };
@@ -47,7 +46,7 @@ export default function Home({ navigation }) { // Asegúrate de pasar 'navigatio
           <Text style={styles.subtitulo}>{proximoViaje.subtitulo2}</Text>
         </View>
 
-        {/* Nuevo componente para mostrar los viajes */}
+        
         <View style={styles.viajesContainer}>
           <Text style={styles.viajesTitulo}>Viajes</Text>
           {viajes.map((viaje, index) => (
