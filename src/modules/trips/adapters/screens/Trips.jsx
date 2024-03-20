@@ -42,14 +42,6 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     elevation: 4,
-    // Propiedades para sombras en iOS
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 7,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 3.84,
   },
   tituloViaje: {
     fontSize: 18,
