@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 
   lineaVertical: {
     width: 2,
-    height: 80,
+    height: 75,
     backgroundColor: 'black',
     position: 'absolute',
     top: 6,
