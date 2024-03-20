@@ -12,15 +12,15 @@ export default function Home({ navigation }) { // Asegúrate de pasar 'navigatio
     titulo: 'Próximo Viaje',
     destino: 'Cuernava - CDMX       Pagado',
     pagado: true,
-    subtitulo: 'Salida:12:00 pm              Asiento:A14',
-    subtitulo2: 'Llegada:1:30 pm             Atobus:Van-114',
+    subtitulo: 'Salida: 12:00 pm              Asiento:A14',
+    subtitulo2: 'Llegada: 1:30 pm             Atobus:Van-114',
   };
 
   const viajes = [
-    {  titulo: 'Cuernava-CDMX', subtitulo:'Salida:12:00PM           Horarios:LMMJVSD' },
-    {  titulo: 'Cuernava-CDMX', subtitulo:'Salida:12:00PM           Horarios:LMMJVSD' },
-    {  titulo: 'Cuernava-CDMX', subtitulo:'Salida:12:00PM           Horarios:LMMJVSD' },
-    {  titulo: 'Cuernava-CDMX', subtitulo:'Salida:12:00PM           Horarios:LMMJVSD' },
+    { titulo: 'Cuernava-CDMX', subtitulo: 'Salida: 12:00PM           Horarios:L M M J V S D' },
+    { titulo: 'Cuernava-CDMX', subtitulo: 'Salida: 12:00PM           Horarios:L M M J V S D' },
+    { titulo: 'Cuernava-CDMX', subtitulo: 'Salida: 12:00PM           Horarios:L M M J V S D' },
+    { titulo: 'Cuernava-CDMX', subtitulo: 'Salida: 12:00PM           Horarios:L M M J V S D' },
   ];
 
   // Función para manejar la navegación a la pantalla de detalles del viaje
@@ -34,7 +34,7 @@ export default function Home({ navigation }) { // Asegúrate de pasar 'navigatio
         <View style={styles.perfilContainer}>
           <Image source={{ uri: usuario.fotoPerfilURL }} style={styles.fotoPerfil} />
           <View>
-            <Text style={styles.nombreUsuario}>{usuario.nombre}</Text> 
+            <Text style={styles.nombreUsuario}>{usuario.nombre}</Text>
           </View>
         </View>
         <Text style={styles.proximoViajeTitulo}>{proximoViaje.titulo}</Text>
@@ -51,11 +51,11 @@ export default function Home({ navigation }) { // Asegúrate de pasar 'navigatio
         <View style={styles.viajesContainer}>
           <Text style={styles.viajesTitulo}>Viajes</Text>
           {viajes.map((viaje, index) => (
-  <TouchableOpacity key={index} style={styles.cardContainer} onPress={navigateToDetallesViaje}>
-    <Text style={styles.cardTitulo2}>{viaje.titulo}</Text>
-    <Text style={styles.cardSubtitulo}>{viaje.subtitulo}</Text>
-  </TouchableOpacity>
-))}
+            <TouchableOpacity key={index} style={styles.cardContainer} onPress={navigateToDetallesViaje}>
+              <Text style={styles.cardTitulo2}>{viaje.titulo}</Text>
+              <Text style={styles.cardSubtitulo}>{viaje.subtitulo}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
       </ScrollView>
     </View>
@@ -94,6 +94,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 20,
     marginTop: 20,
+    // Propiedades de sombreado específicas de iOS
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3.84,
+    // Propiedad de elevación específica de Android
     elevation: 4,
   },
   cardTituloContainer: {

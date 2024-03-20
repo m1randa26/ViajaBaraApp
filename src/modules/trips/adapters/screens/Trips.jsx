@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View,ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 
 
 export default function Trips() {
-const Trips=[
-    { id: 1, titulo:'Cuernavaca-CDMX', subtitulo: 'Fecha: 14/02/2024' },
-    { id: 2,  titulo: 'Cuernavaca-CDMX', subtitulo: 'Fecha: 14/02/2024'},
-    { id: 3,  titulo: 'Cuernavaca-CDMX', subtitulo: 'Fecha: 14/02/2024' },
+  const Trips = [
+    { id: 1, titulo: 'Cuernavaca-CDMX', subtitulo: 'Fecha: 14/02/2024' },
+    { id: 2, titulo: 'Cuernavaca-CDMX', subtitulo: 'Fecha: 14/02/2024' },
+    { id: 3, titulo: 'Cuernavaca-CDMX', subtitulo: 'Fecha: 14/02/2024' },
   ];
   return (
     <View style={styles.container}>
@@ -42,6 +42,14 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     elevation: 4,
+    // Propiedades para sombras en iOS
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3.84,
   },
   tituloViaje: {
     fontSize: 18,
