@@ -1,7 +1,12 @@
-import { StyleSheet, Text, View, Image, ScrollView,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import React from 'react';
 
-export default function DetallesViaje() {
+export default function DetallesViaje({ navigation }) {
+
+  const navigateToBuyTicket = () => {
+    navigation.navigate('ComprarBoleto');
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -42,9 +47,9 @@ export default function DetallesViaje() {
             <View style={styles.lineaVertical2}></View>
             <Text style={styles.textoLista}>AV. Paseo de la Reforma CDMX</Text>
           </View>
-          
+
         </View>
-        <TouchableOpacity style={styles.boton}>
+        <TouchableOpacity style={styles.boton} onPress={navigateToBuyTicket}>
           <Text style={styles.textoBoton}>Adquirir boleto</Text>
         </TouchableOpacity>
       </View>
@@ -75,7 +80,7 @@ const styles = StyleSheet.create({
   },
   contenedorTitulo: {
     alignItems: 'center',
-    position: 'relative', 
+    position: 'relative',
   },
   subtitulo: {
     fontSize: 20,
@@ -84,17 +89,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 30,
     color: 'red',
-    backgroundColor: 'white', 
-    paddingVertical: 5, 
-    paddingHorizontal: 2, 
+    backgroundColor: 'white',
+    paddingVertical: 5,
+    paddingHorizontal: 2,
     zIndex: 1,
   },
   lineaHorizontal: {
-    borderBottomColor: 'red', 
+    borderBottomColor: 'red',
     borderBottomWidth: 2,
     width: '100%',
     position: 'absolute',
-    top: '65%', 
+    top: '65%',
   },
   lista: {
     marginLeft: 20,
@@ -124,8 +129,8 @@ const styles = StyleSheet.create({
     top: 6,
     left: 4,
   },
-  lineaVertical2:{
-   
+  lineaVertical2: {
+
   },
   boton: {
     backgroundColor: 'white',

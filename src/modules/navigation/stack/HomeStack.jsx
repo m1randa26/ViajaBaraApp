@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../../home/adapters/screens/Home';
 import DetallesViaje from '../../trips/adapters/screens/components/DetallesViaje';
+import ComprarBoleto from '../../trips/adapters/screens/components/ComprarBoleto';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,20 @@ const HomeStack = () => {
                     },
                     headerTintColor: 'white' 
                 }}
+            />
+            <Stack.Screen
+            name='ComprarBoleto'
+            component={ComprarBoleto}
+            options={{
+                title: 'Comprar boleto',
+                headerStyle: {
+                    backgroundColor: '#fd1400'
+                },
+                headerTitleStyle: {
+                    color: 'white'
+                },
+                headerTintColor: 'white'
+            }}
             />
         </Stack.Navigator>
     );
