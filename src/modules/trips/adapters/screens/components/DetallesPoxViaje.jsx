@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { StyleSheet, Text, View, Image, ScrollView,TouchableOpacity} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-export default function DetallesViaje({ navigation }) {
-
+export default function DetallesPoxViaje({ navigation }) {
+  
   const navigateToBuyTicket = () => {
     navigation.navigate('ComprarBoleto');
   };
-
+    //isaac es medio puto
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -48,8 +48,8 @@ export default function DetallesViaje({ navigation }) {
             <View style={styles.lineaVertical2}></View>
             <Text style={styles.textoLista}>AV. Paseo de la Reforma CDMX</Text>
           </View>
-
         </View>
+       
         <MapView
           style={styles.map}
           initialRegion={{
@@ -65,10 +65,10 @@ export default function DetallesViaje({ navigation }) {
             description="Destino"
           />
         </MapView>
-
-        <TouchableOpacity style={styles.boton} onPress={navigateToBuyTicket}>
-          <Text style={styles.textoBoton}>Adquirir boleto</Text>
+        <TouchableOpacity style={styles.botonDejar} onPress={navigateToBuyTicket}>
+          <Text style={styles.textoBotonDejar}>Dejar Viaje</Text>
         </TouchableOpacity>
+
       </View>
     </ScrollView>
   );
@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
   textoLista: {
     fontSize: 16,
   },
-
   lineaVertical: {
     width: 2,
     height: 75,
@@ -146,25 +145,22 @@ const styles = StyleSheet.create({
     top: 6,
     left: 4,
   },
-  lineaVertical2: {
-
-  },
-  boton: {
-    backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 50,
-    borderColor: '#3DD7FD',
-    borderWidth: 2,
-  },
-  textoBoton: {
-    color: '#3DD7FD',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
   map: {
     width: '100%',
     height: 300,
     marginTop: 20,
+  },
+  botonDejar: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 50,
+    borderColor: 'red',
+    borderWidth: 2,
+  },
+  textoBotonDejar: {
+    color: 'red',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });

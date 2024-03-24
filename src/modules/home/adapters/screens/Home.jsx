@@ -5,10 +5,10 @@ export default function Home({ navigation }) {
 
   const usuario = {
     nombre: 'Enrique Copado',
-    fotoPerfilURL: '',
+    fotoPerfilURL: 'https://via.placeholder.com/500x300',
   };
 
-  const proximoViaje = {
+  const proximoViaje = { 
     titulo: 'Próximo Viaje',
     destino: 'Cuernava - CDMX       Pagado',
     pagado: true,
@@ -26,6 +26,11 @@ export default function Home({ navigation }) {
   const navigateToDetallesViaje = () => {
     navigation.navigate('DetallesViaje');
   };
+  
+  const navigateToDetallesPoxViaje = () => {
+    navigation.navigate('DetallesPoxViaje');
+  };
+  
 
   return (
     <View style={styles.container}>
@@ -36,15 +41,17 @@ export default function Home({ navigation }) {
             <Text style={styles.nombreUsuario}>{usuario.nombre}</Text>
           </View>
         </View>
-        <Text style={styles.proximoViajeTitulo}>{proximoViaje.titulo}</Text>
-        <View style={styles.cardContainer}>
-          <View style={styles.cardTituloContainer}>
-            <Text style={styles.cardTitulo}>{proximoViaje.destino}</Text>
-            {proximoViaje.pagado && <View style={styles.circuloVerde}></View>}
+        <TouchableOpacity onPress={navigateToDetallesPoxViaje}>
+          <Text style={styles.proximoViajeTitulo}>{proximoViaje.titulo}</Text>
+          <View style={styles.cardContainer}>
+            <View style={styles.cardTituloContainer}>
+              <Text style={styles.cardTitulo}>{proximoViaje.destino}</Text>
+              {proximoViaje.pagado && <View style={styles.circuloVerde}></View>}
+            </View>
+            <Text style={styles.subtitulo}>{proximoViaje.subtitulo}</Text>
+            <Text style={styles.subtitulo}>{proximoViaje.subtitulo2}</Text>
           </View>
-          <Text style={styles.subtitulo}>{proximoViaje.subtitulo}</Text>
-          <Text style={styles.subtitulo}>{proximoViaje.subtitulo2}</Text>
-        </View>
+        </TouchableOpacity>
 
         
         <View style={styles.viajesContainer}>
