@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 // Creamos nuestro componente
 export default function Navigation() {
     return (
-        <NavigationContainer styles={styles.container}>
+        <NavigationContainer>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
@@ -39,8 +39,6 @@ export default function Navigation() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        padding: 16,
     }
 });
 
