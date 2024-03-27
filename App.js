@@ -8,6 +8,6 @@ import NavigationConductor from './src/modules/navigation/NavigationConductor';
 
 export default function App() {
   return (
-    <NavigationConductor/>
+    <Navigation/>
   );
 }

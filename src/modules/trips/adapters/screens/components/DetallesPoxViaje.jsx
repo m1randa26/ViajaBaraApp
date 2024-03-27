@@ -1,13 +1,15 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView,TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 export default function DetallesPoxViaje({ navigation }) {
-  
-  const navigateToBuyTicket = () => {
-    navigation.navigate('ComprarBoleto');
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleConfirm = () => {
+    navigation.navigate('Home');
+    setShowAlert(false);
   };
-    //isaac es medio puto
+
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -65,10 +67,29 @@ export default function DetallesPoxViaje({ navigation }) {
             description="Destino"
           />
         </MapView>
-        <TouchableOpacity style={styles.botonDejar} onPress={navigateToBuyTicket}>
+        <TouchableOpacity style={styles.botonDejar} onPress={() => setShowAlert(true)}>
           <Text style={styles.textoBotonDejar}>Dejar Viaje</Text>
         </TouchableOpacity>
 
+        <Modal
+          visible={showAlert}
+          transparent
+          animationType="fade"
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.alertContainer}>
+              <Text style={styles.alertText}>¿Estás seguro de dejar el viaje?</Text>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity style={[styles.alertButton, { backgroundColor: 'red' }]} onPress={handleConfirm}>
+                  <Text style={styles.alertButtonText}>Sí</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.alertButton, { backgroundColor: '#3DD7FD' }]} onPress={() => setShowAlert(false)}>
+                  <Text style={styles.alertButtonText}>No</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   );
@@ -163,4 +184,40 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  alertContainer: {
+    backgroundColor: 'white',
+    padding: 40,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  alertText: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    color: 'red',
+  },
+  alertButton: {
+    padding: 15,
+    borderRadius: 10,
+    width: 120,
+    
+  },
+  alertButtonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
 });
+``

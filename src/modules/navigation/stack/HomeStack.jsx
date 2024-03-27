@@ -19,7 +19,9 @@ const HomeStack = () => {
                     },
                     headerTitleStyle: {
                         color: 'white'
-                    }
+                    },
+                    
+                
                 }}
             />
             <Stack.Screen
