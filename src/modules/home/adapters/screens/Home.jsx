@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet,Image, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { SearchBar } from '@rneui/base';
 
@@ -7,7 +7,7 @@ export default function Home({ navigation }) {
 
   const usuario = {
     nombre: 'Enrique Copado',
-    fotoPerfilURL: 'https://cdn.pixabay.com/photo/2021/06/04/10/29/guy-6309462_1280.jpg',
+    fotoPerfilURL: 'https://via.placeholder.com/500x300',
   };
 
   const proximoViaje = {
@@ -29,11 +29,13 @@ export default function Home({ navigation }) {
     navigation.navigate('DetallesViaje');
   };
 
+  const navigateToDetallesPoxViaje = () => {
+    navigation.navigate('DetallesPoxViaje');
+  };
 
   return (
     <View style={styles.container}>
-
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: 15 }}>
         <View style={styles.busqueda}>
           <Text style={styles.nombreUsuario}>Bienvenido Enrique</Text>
           <View style={styles.containerSearch}>
@@ -53,7 +55,7 @@ export default function Home({ navigation }) {
         </View>
 
         <Text style={styles.proximoViajeTitulo}>{proximoViaje.titulo}</Text>
-
+        <TouchableOpacity onPress={navigateToDetallesPoxViaje}>
         <View style={[styles.cardContainer, style = { marginBottom: 24 }]}>
           <View style={styles.cardTituloContainer}>
             <Text style={styles.cardTitulo}>{proximoViaje.destino}</Text>
@@ -62,6 +64,7 @@ export default function Home({ navigation }) {
           <Text style={styles.subtitulo}>{proximoViaje.subtitulo}</Text>
           <Text style={styles.subtitulo}>{proximoViaje.subtitulo2}</Text>
         </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.backgroundCard}>
@@ -173,6 +176,30 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingHorizontal: 8,
+  },
+  backgroundCard: {
+    flex: 1,
+    borderTopLeftRadius: 48,
+    borderTopRightRadius: 48,
+    backgroundColor: 'white',
+    paddingVertical: 20,
+    paddingHorizontal: 12
+  },
+  perfilContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  fotoPerfil: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
+  },
+  nombreUsuario: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   backgroundCard: {
     flex: 1,

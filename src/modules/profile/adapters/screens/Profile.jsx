@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   cardInfo: {
-    borderTopLeftRadius: '60%',
-    borderTopRightRadius: '60%',
+    borderTopLeftRadius: 60,
+    borderTopRightRadius: 60,
     backgroundColor: '#fff',
     flexDirection: 'column',
     alignItems: 'center',

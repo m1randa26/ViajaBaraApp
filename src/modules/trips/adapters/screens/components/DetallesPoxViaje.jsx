@@ -1,11 +1,13 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-export default function DetallesViaje({ navigation }) {
+export default function DetallesPoxViaje({ navigation }) {
+  const [showAlert, setShowAlert] = useState(false);
 
-  const navigateToBuyTicket = () => {
-    navigation.navigate('ComprarBoleto');
+  const handleConfirm = () => {
+    navigation.navigate('Home');
+    setShowAlert(false);
   };
 
   return (
@@ -48,8 +50,8 @@ export default function DetallesViaje({ navigation }) {
             <View style={styles.lineaVertical2}></View>
             <Text style={styles.textoLista}>AV. Paseo de la Reforma CDMX</Text>
           </View>
-
         </View>
+       
         <MapView
           style={styles.map}
           initialRegion={{
@@ -65,10 +67,29 @@ export default function DetallesViaje({ navigation }) {
             description="Destino"
           />
         </MapView>
-
-        <TouchableOpacity style={styles.boton} onPress={navigateToBuyTicket}>
-          <Text style={styles.textoBoton}>Adquirir boleto</Text>
+        <TouchableOpacity style={styles.botonDejar} onPress={() => setShowAlert(true)}>
+          <Text style={styles.textoBotonDejar}>Dejar Viaje</Text>
         </TouchableOpacity>
+
+        <Modal
+          visible={showAlert}
+          transparent
+          animationType="fade"
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.alertContainer}>
+              <Text style={styles.alertText}>¿Estás seguro de dejar el viaje?</Text>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity style={[styles.alertButton, { backgroundColor: 'red' }]} onPress={handleConfirm}>
+                  <Text style={styles.alertButtonText}>Sí</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.alertButton, { backgroundColor: '#3DD7FD' }]} onPress={() => setShowAlert(false)}>
+                  <Text style={styles.alertButtonText}>No</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   );
@@ -137,7 +158,6 @@ const styles = StyleSheet.create({
   textoLista: {
     fontSize: 16,
   },
-
   lineaVertical: {
     width: 2,
     height: 75,
@@ -146,25 +166,58 @@ const styles = StyleSheet.create({
     top: 6,
     left: 4,
   },
-  lineaVertical2: {
-
-  },
-  boton: {
-    backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 50,
-    borderColor: '#3DD7FD',
-    borderWidth: 2,
-  },
-  textoBoton: {
-    color: '#3DD7FD',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
   map: {
     width: '100%',
     height: 300,
     marginTop: 20,
   },
+  botonDejar: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 50,
+    borderColor: 'red',
+    borderWidth: 2,
+  },
+  textoBotonDejar: {
+    color: 'red',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  alertContainer: {
+    backgroundColor: 'white',
+    padding: 40,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  alertText: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    color: 'red',
+  },
+  alertButton: {
+    padding: 15,
+    borderRadius: 10,
+    width: 120,
+    
+  },
+  alertButtonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
 });
+``
