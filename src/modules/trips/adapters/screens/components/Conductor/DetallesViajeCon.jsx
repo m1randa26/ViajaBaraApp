@@ -1,12 +1,17 @@
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity,Modal } from 'react-native';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-export default function DetallesPoxViaje({ navigation }) {
-  const [showAlert, setShowAlert] = useState(false);
+export default function DetallesViajeCon({ navigation }) {
+    const [showAlert, setShowAlert] = useState(false);
+    
+
+  const navigateToPaseLista = () => {
+    navigation.navigate('PaseLista');
+  };
 
   const handleConfirm = () => {
-    navigation.navigate('Home');
+    navigation.navigate('HomeCon');
     setShowAlert(false);
   };
 
@@ -50,8 +55,8 @@ export default function DetallesPoxViaje({ navigation }) {
             <View style={styles.lineaVertical2}></View>
             <Text style={styles.textoLista}>AV. Paseo de la Reforma CDMX</Text>
           </View>
+
         </View>
-       
         <MapView
           style={styles.map}
           initialRegion={{
@@ -67,8 +72,13 @@ export default function DetallesPoxViaje({ navigation }) {
             description="Destino"
           />
         </MapView>
-        <TouchableOpacity style={styles.botonDejar} onPress={() => setShowAlert(true)}>
-          <Text style={styles.textoBotonDejar}>Dejar Viaje</Text>
+
+        <TouchableOpacity style={styles.botonPase} onPress={navigateToPaseLista}>
+          <Text style={styles.textoBotonPase}>Pase de Lista</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.botonIniciar} onPress={() => setShowAlert(true)}>
+          <Text style={styles.textoBotonIniciar}>Iniciar Viaje</Text>
         </TouchableOpacity>
 
         <Modal
@@ -78,7 +88,7 @@ export default function DetallesPoxViaje({ navigation }) {
         >
           <View style={styles.modalContainer}>
             <View style={styles.alertContainer}>
-              <Text style={styles.alertText}>¿Estás seguro de dejar el viaje?</Text>
+              <Text style={styles.alertText}>¿Estás seguro de comenzar el viaje?</Text>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={[styles.alertButton, { backgroundColor: 'red' }]} onPress={handleConfirm}>
                   <Text style={styles.alertButtonText}>Sí</Text>
@@ -158,6 +168,7 @@ const styles = StyleSheet.create({
   textoLista: {
     fontSize: 16,
   },
+
   lineaVertical: {
     width: 2,
     height: 75,
@@ -166,21 +177,37 @@ const styles = StyleSheet.create({
     top: 6,
     left: 4,
   },
+  lineaVertical2: {
+
+  },
+  botonPase: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 50,
+    borderColor: '#3DD7FD',
+    borderWidth: 2,
+  },
+  textoBotonPase: {
+    color: '#3DD7FD',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
   map: {
     width: '100%',
     height: 300,
     marginTop: 20,
   },
-  botonDejar: {
+  botonIniciar: {
     backgroundColor: 'white',
     padding: 15,
     borderRadius: 10,
-    marginTop: 50,
-    borderColor: 'red',
+    marginTop: 20,
+    borderColor: '#3DD7FD',
     borderWidth: 2,
   },
-  textoBotonDejar: {
-    color: 'red',
+  textoBotonIniciar: {
+    color: '#3DD7FD',
     textAlign: 'center',
     fontWeight: 'bold',
   },
@@ -220,4 +247,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-``

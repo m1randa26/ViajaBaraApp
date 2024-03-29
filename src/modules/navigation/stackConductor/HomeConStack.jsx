@@ -1,18 +1,17 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from '../../home/adapters/screens/Home';
-import DetallesViaje from '../../trips/adapters/screens/components/DetallesViaje';
 import ComprarBoleto from '../../trips/adapters/screens/components/ComprarBoleto';
-import DetallesPoxViaje from '../../trips/adapters/screens/components/DetallesPoxViaje';
-import Auth from '../../auth/adapters/screens/Auth';
+import PaseLista from '../../trips/adapters/screens/components/Conductor/PaseLista';
+import HomeCon from '../../home/adapters/screens/HomeCon';
+import DetallesViajeCon from '../../trips/adapters/screens/components/Conductor/DetallesViajeCon';
 const Stack = createStackNavigator();
 
-const HomeStack = () => {
+const HomeComStack = () => {
     return (
         <Stack.Navigator initialRouteName="Home">
             <Stack.Screen
-                name="Home"
-                component={Home}
+                name="HomeCon"
+                component={HomeCon}
                 options={{
                     title: 'ViajaBara',
                     headerStyle: {
@@ -26,8 +25,8 @@ const HomeStack = () => {
                 }}
             />
             <Stack.Screen
-                name="DetallesViaje"
-                component={DetallesViaje} 
+                name="DetallesViajeCon"
+                component={DetallesViajeCon} 
                 options={{
                     title: 'Detalles del Viaje', 
                     headerStyle: {
@@ -40,8 +39,8 @@ const HomeStack = () => {
                 }}
             />
             <Stack.Screen
-                name="DetallesPoxViaje"
-                component={DetallesPoxViaje}
+                name="PaseLista"
+                component={PaseLista}
                 options={{
                     title: 'ViajaBara',
                     headerStyle: {
@@ -66,10 +65,8 @@ const HomeStack = () => {
                 headerTintColor: 'white'
             }}
             />
-            
-            
         </Stack.Navigator>
     );
 }
 
-export default HomeStack;
+export default HomeComStack;
