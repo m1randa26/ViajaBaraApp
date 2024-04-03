@@ -3,9 +3,9 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from '@rneui/base';
-import HomeStack from './stack/HomeStack';
-import ProfileStack from './stack/ProfileStack';
-import TripsStack from './stack/TripsStack';
+import HomeConStack from './stackConductor/HomeConStack';
+import PerfilConStack from './stackConductor/PerfilConStack';
+
 
 // Creamos nuestra barra de navegacion
 const Tab = createBottomTabNavigator();
@@ -26,8 +26,8 @@ export default function Navigation() {
                     headerShown: false,
                 })}
             >
-                <Tab.Screen name='HomeStack' component={HomeStack} options={{ title: 'Home' }} />
-                <Tab.Screen name='ProfileStack' component={ProfileStack} options={{ title: 'Profile' }} />
+                <Tab.Screen name='HomeConStack' component={HomeConStack} options={{ title: 'Home' }} />
+                <Tab.Screen name='PerfilConStack' component={PerfilConStack} options={{ title: 'Profile' }} />
 
 
             </Tab.Navigator>
@@ -50,10 +50,10 @@ const getIconName = (routeName, focused) => {
     let iconType = 'material-community';
 
     switch (routeName) {
-        case 'HomeStack':
+        case 'HomeConStack':
             iconName = focused ? 'home' : 'home';
             break;
-        case 'ProfileStack':
+        case 'PerfilConStack':
             iconName = focused ? 'account' : 'account';
             break;
         

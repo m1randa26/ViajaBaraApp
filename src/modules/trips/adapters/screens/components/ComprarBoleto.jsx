@@ -144,6 +144,7 @@ const ComprarBoleto = ({ route, navigation }) => {
             <Text style={styles.seatNumber}>20</Text>
           </TouchableOpacity>
         </View>
+
       </View>
       <TouchableOpacity
         onPress={handleButtonPress}
@@ -359,4 +360,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }
-})
+});

@@ -1,15 +1,8 @@
+import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Avatar } from '@rneui/themed';
-import { useNavigation } from '@react-navigation/native'; // Importa el hook useNavigation
 
-const Profile = () => {
-  const navigation = useNavigation(); // Obtiene la navegación
-
-  const handleLogin = () => {
-    navigation.navigate('Auth'); // Navega al componente Auth
-  };
-
+const PerfilCon = () => {
   return (
     <View style={styles.container}>
       <View style={[styles.halfScreen, styles.info]}>
@@ -43,15 +36,12 @@ const Profile = () => {
           <Text style={{fontSize: 16, fontWeight: 'bold'}}>Género:</Text>
           <Text style={{fontSize: 16, color: '#5E5E5E'}}>Masculino</Text>
         </View>
-        <TouchableOpacity onPress={handleLogin}>
-           <Text style={styles.loginButton}>Iniciar sesión</Text>
-        </TouchableOpacity>
       </View>
     </View>
   )
 }
 
-export default Profile
+export default PerfilCon
 
 const styles = StyleSheet.create({
   container: {
@@ -85,10 +75,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 16,
     justifyContent: 'space-between'
-  },
-  loginButton: {
-    marginTop: 20,
-    color: '#3DD7FD',
-    fontSize: 16,
-  },
-});
+  }
+})
