@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, TouchableOpacity } from 'react-native'
-import React, { useState }, { useState } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity} from 'react-native'
+import React, { useState } from 'react'
 
 const ComprarBoleto = () => {
 
@@ -115,81 +115,7 @@ const ComprarBoleto = () => {
             <Text style={styles.seatNumber}>20</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>A</Text>
-          <TouchableOpacity onPress={() => handleSeatPress(1)} style={[styles.seat, selectedSeat === 1 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(5)} style={[styles.seat, selectedSeat === 5 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>5</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(9)} style={[styles.seat, selectedSeat === 9 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>9</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(13)} style={[styles.seat, selectedSeat === 13 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>13</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(17)} style={[styles.seat, selectedSeat === 17 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>17</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>B</Text>
-          <TouchableOpacity onPress={() => handleSeatPress(2)} style={[styles.seat, selectedSeat === 2 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>2</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(6)} style={[styles.seat, selectedSeat === 6 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>6</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(10)} style={[styles.seat, selectedSeat === 10 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>10</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(14)} style={[styles.seat, selectedSeat === 14 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>14</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(18)} style={[styles.seat, selectedSeat === 18 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>18</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.section}>
-
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>C</Text>
-          <TouchableOpacity onPress={() => handleSeatPress(3)} style={[styles.seat, selectedSeat === 3 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>3</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(7)} style={[styles.seat, selectedSeat === 7 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>7</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(11)} style={[styles.seat, selectedSeat === 11 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>11</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(15)} style={[styles.seat, selectedSeat === 15 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>15</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(19)} style={[styles.seat, selectedSeat === 19 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>19</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>D</Text>
-          <TouchableOpacity onPress={() => handleSeatPress(4)} style={[styles.seat, selectedSeat === 4 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>4</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(8)} style={[styles.seat, selectedSeat === 8 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>8</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(12)} style={[styles.seat, selectedSeat === 12 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>12</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(16)} style={[styles.seat, selectedSeat === 16 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>16</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(20)} style={[styles.seat, selectedSeat === 20 && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>20</Text>
-          </TouchableOpacity>
-        </View>
+       
       </View>
 
       <TouchableOpacity
@@ -202,18 +128,6 @@ const ComprarBoleto = () => {
         >Comprar boleto
         </Text>
       </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={handleButtonPress}
-        style={[styles.boton, isButtonDisabled && styles.disabledButton]}
-        disabled={isButtonDisabled}
-      >
-        <Text
-          style={[styles.textoBoton, isButtonDisabled && styles.disabledText]}
-        >Comprar boleto
-        </Text>
-      </TouchableOpacity>
-
       
     </View>
   )
@@ -284,8 +198,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#5E5E5E',
     justifyContent: 'center',
-    alignItems: 'center'
-    alignItems: 'center'
+    alignItems: 'center',
   },
   seat: {
     width: 40,
@@ -333,7 +246,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
   },
   disabledText: {
-    color: 'gray'
+    color: 'gray',
     fontWeight: 'bold',
     color: 'white'
   },
@@ -356,5 +269,6 @@ const styles = StyleSheet.create({
   },
   disabledText: {
     color: 'gray'
+  },
   }
-})
+});
