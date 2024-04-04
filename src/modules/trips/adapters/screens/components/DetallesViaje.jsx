@@ -1,11 +1,58 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
-import React from 'react';
+import {
+  StyleSheet, Text, View, Image,
+  ScrollView, TouchableOpacity, Modal, ToastAndroid
+} from 'react-native';
+import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
+import Toast, { ErrorToast } from 'react-native-toast-message';
 
 export default function DetallesViaje({ navigation }) {
 
-  const navigateToBuyTicket = () => {
-    navigation.navigate('ComprarBoleto');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [ticketCount, setTicketCount] = useState(1);
+
+  const toastConfig = {
+    error: (props) => (
+      <ErrorToast
+        {...props}
+        text1Style={{
+          fontSize: 17
+        }}
+        text2Style={{
+          fontSize: 13
+        }}
+      />
+    )
+  };
+
+  const handleButtonPress = () => {
+    setModalVisible(true);
+  }
+
+  const handleIncrement = () => {
+    if (ticketCount < 3) { // Limita el conteo máximo a 3 boletos
+      setTicketCount(ticketCount + 1);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Límite de boletos',
+        text2: 'Solo puedes adquirir 3 boletos como máximo'
+      });
+    }
+  };
+
+  const handleDecrement = () => {
+    if (ticketCount > 1) {
+      setTicketCount(ticketCount - 1);
+    }
+  };
+
+  const handleContinue = () => {
+    console.log(`Continuar a otra pantalla con ${ticketCount} boletos`);
+    setModalVisible(false);
+    navigation.navigate('ComprarBoleto', { ticketCount });
+    // navigation.navigate('OtraPantalla', { ticketCount });
+    // Asegúrate de tener acceso a la navegación, ya sea a través de props o mediante el uso de useNavigation hook
   };
 
   return (
@@ -66,9 +113,41 @@ export default function DetallesViaje({ navigation }) {
           />
         </MapView>
 
-        <TouchableOpacity style={styles.boton} onPress={navigateToBuyTicket}>
+        <TouchableOpacity style={styles.boton} onPress={handleButtonPress}>
           <Text style={styles.textoBoton}>Adquirir boleto</Text>
         </TouchableOpacity>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={{ fontSize: 16, marginBottom: 16 }}>Cantidad de boletos:</Text>
+              <View style={styles.counterContainer}>
+                <TouchableOpacity onPress={handleDecrement} style={styles.counterButton}>
+                  <Text style={styles.counterButtonText}>-</Text>
+                </TouchableOpacity>
+                <Text style={styles.ticketCount}>{ticketCount}</Text>
+                <TouchableOpacity onPress={handleIncrement} style={styles.counterButton}>
+                  <Text style={styles.counterButtonText}>+</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.buttonsContainer}>
+                <TouchableOpacity onPress={() => setModalVisible(false)} style={[styles.button, styles.closeButton]}>
+                  <Text style={styles.buttonText}>Cerrar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleContinue} style={[styles.button, styles.continueButton]}>
+                  <Text style={styles.buttonText}>Continuar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <Toast config={toastConfig} />
+        </Modal>
       </View>
     </ScrollView>
   );
@@ -167,4 +246,57 @@ const styles = StyleSheet.create({
     height: 300,
     marginTop: 20,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscuro para el modal
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  counterContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  counterButton: {
+    backgroundColor: 'gray',
+    padding: 10,
+    borderRadius: 5,
+  },
+  counterButtonText: {
+    color: 'white',
+    fontSize: 20,
+  },
+  ticketCount: {
+    fontSize: 20,
+    marginHorizontal: 10,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  continueButton: {
+    width: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 4,
+  },
+  closeButton: {
+    width: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 4,
+    marginRight: 10,
+  },
+  buttonText: {
+    color: 'white'
+  }
 });

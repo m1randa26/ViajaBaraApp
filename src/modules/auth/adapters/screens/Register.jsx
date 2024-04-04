@@ -23,7 +23,7 @@ const Register = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://192.168.0.178:8080/users/', {
+      const response = await fetch('http://192.168.0.178:8080/api/user/registro/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,24 +33,21 @@ const Register = ({ navigation }) => {
           email,
           phone,
           password,
-          role_id: 2,
+          role_id: 3,
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        // Registro exitoso
-        Alert.alert('Éxito',
-         'Usuario registrado correctamente',
-         [
+        Alert.alert('Éxito', 'Usuario registrado correctamente', [
           {
             text: 'Iniciar sesión',
             onPress: () => navigation.navigate('Auth'),
           },
-         ]
-         );
+        ]);
       } else {
-        // Error al registrar
-        Alert.alert('Error', 'Hubo un problema al registrar el usuario');
+        Alert.alert('Error', data.message || 'Hubo un problema al registrar el usuario');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -59,12 +56,14 @@ const Register = ({ navigation }) => {
   };
 
   const NavigateToAuth = () => {
-    navigation.navigate('Auth'); // Reemplaza 'Auth' con el nombre de tu componente de autenticación
+    navigation.navigate('Auth');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Crear cuenta</Text>
+      <View style={{ width: '80%', justifyContent: 'flex-start' }}>
+        <Text style={styles.title}>Crea una cuenta</Text>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Nombre completo"
@@ -114,7 +113,10 @@ const Register = ({ navigation }) => {
         <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={NavigateToAuth}>
-        <Text style={styles.loginText}>¿Ya tienes cuenta? Inicia sesión</Text>
+        <Text style={styles.loginText}>
+          <Text style={{ color: '#1E1E1E' }}>¿Ya tienes cuenta? </Text>
+          <Text style={{ fontWeight: 'bold' }}>Inicia sesión</Text>
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -127,8 +129,9 @@ const styles = {
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 32,
     color: 'red',
   },
   inputContainer: {
@@ -136,7 +139,7 @@ const styles = {
   },
   input: {
     width: '100%',
-    height: 40,
+    height: 50,
     marginBottom: 10,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -151,7 +154,7 @@ const styles = {
   },
   passwordInput: {
     flex: 1,
-    height: 40,
+    height: 50,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,

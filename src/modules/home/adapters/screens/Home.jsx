@@ -201,4 +201,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  backgroundCard: {
+    flex: 1,
+    borderTopLeftRadius: 48,
+    borderTopRightRadius: 48,
+    backgroundColor: 'white',
+    paddingVertical: 20,
+    paddingHorizontal: 12
+  }
 });
