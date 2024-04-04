@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   loginButton: {
-    marginTop: 20,
+    marginTop: 32,
     color: '#3DD7FD',
-    fontSize: 16,
+    fontSize: 20,
   },
 });

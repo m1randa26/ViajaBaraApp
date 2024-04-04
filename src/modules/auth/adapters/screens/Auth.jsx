@@ -38,7 +38,9 @@ const Auth = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Iniciar Sesión</Text>
+      <View style={{ width: '80%', justifyContent: 'flex-start' }}>
+        <Text style={styles.title}>Bienvenido</Text>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Correo electrónico"
@@ -59,11 +61,14 @@ const Auth = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={navigateToRegister}>
-          <Text style={styles.createAccountText}>¿No tienes cuenta? Crea una</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.forgotPasswordContainer}>
-          <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
-        </TouchableOpacity>
+        <Text style={styles.createAccountText}>
+          <Text style={{ color: '#1E1E1E' }}>¿No tienes cuenta? </Text>
+          <Text style={{ fontWeight: 'bold', color: '#3DD7FD' }}>Crea una</Text>
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.forgotPasswordContainer}>
+        <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -75,8 +80,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 32,
     color: 'red',
   },
   inputContainer: {
@@ -85,7 +91,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    height: 40,
+    height: 50,
     marginBottom: 10,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -97,7 +103,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#3DD7FD',
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: 24,
   },
   buttonText: {
     color: 'white',
@@ -106,16 +112,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   createAccountText: {
-    marginTop: 20,
+    marginTop: 32,
     fontSize: 16,
     color: '#3DD7FD',
   },
   forgotPasswordContainer: {
-    marginTop: 10,
+    marginTop: 24,
   },
   forgotPassword: {
-    fontSize: 14,
-    color: 'blue',
+    fontSize: 16,
+    color: '#1E1E1E',
     textDecorationLine: 'underline',
   },
 });

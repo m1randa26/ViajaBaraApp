@@ -40,14 +40,14 @@ const Register = ({ navigation }) => {
       if (response.ok) {
         // Registro exitoso
         Alert.alert('Éxito',
-         'Usuario registrado correctamente',
-         [
-          {
-            text: 'Iniciar sesión',
-            onPress: () => navigation.navigate('Auth'),
-          },
-         ]
-         );
+          'Usuario registrado correctamente',
+          [
+            {
+              text: 'Iniciar sesión',
+              onPress: () => navigation.navigate('Auth'),
+            },
+          ]
+        );
       } else {
         // Error al registrar
         Alert.alert('Error', 'Hubo un problema al registrar el usuario');
@@ -64,7 +64,9 @@ const Register = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Crear cuenta</Text>
+      <View style={{ width: '80%', justifyContent: 'flex-start' }}>
+        <Text style={styles.title}>Crea una cuenta</Text>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Nombre completo"
@@ -114,7 +116,10 @@ const Register = ({ navigation }) => {
         <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={NavigateToAuth}>
-        <Text style={styles.loginText}>¿Ya tienes cuenta? Inicia sesión</Text>
+        <Text style={styles.loginText}>
+          <Text style={{ color: '#1E1E1E' }}>¿Ya tienes cuenta? </Text>
+          <Text style={{ fontWeight: 'bold' }}>Inicia sesión</Text>
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -127,8 +132,9 @@ const styles = {
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 32,
     color: 'red',
   },
   inputContainer: {
@@ -136,7 +142,7 @@ const styles = {
   },
   input: {
     width: '100%',
-    height: 40,
+    height: 50,
     marginBottom: 10,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -151,7 +157,7 @@ const styles = {
   },
   passwordInput: {
     flex: 1,
-    height: 40,
+    height: 50,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
