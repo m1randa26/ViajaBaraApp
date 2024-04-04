@@ -1,9 +1,31 @@
-import React, { useState } from 'react';
-import { StyleSheet,Image, Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 import { SearchBar } from '@rneui/base';
 
 export default function Home({ navigation }) {
+
+  const [viajesData, setViajesData] = useState([]);
+
+  useEffect(() => {
+    const fetchViajes = async () => {
+      try {
+        const response = await axios.get('http://192.168.100.8:8080/api/viaje/');
+        setViajesData(response.data.data);
+        console.log(response.data.data);
+      } catch (error) {
+        console.error('Error al obtener los datos', error);
+      }
+    };
+
+    fetchViajes();
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchViajes();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const usuario = {
     nombre: 'Enrique Copado',
@@ -71,9 +93,9 @@ export default function Home({ navigation }) {
         <ScrollView style={styles.scrollView}>
           <View style={styles.viajesContainer}>
             <Text style={styles.viajesTitulo}>Viajes</Text>
-            {viajes.map((viaje, index) => (
+            {viajesData.map((viaje, index) => (
               <TouchableOpacity key={index} style={[styles.cardContainer, styles.cardViajes]} onPress={navigateToDetallesViaje}>
-                <Text style={styles.cardTitulo}>Cuernavaca - CDMX</Text>
+                <Text style={styles.cardTitulo}>{viaje.origen}</Text>
                 <Text style={styles.cardSubtitulo}>
                   <Text style={{ fontWeight: 'bold' }}>Salida:</Text> 8:00 am
                 </Text>
