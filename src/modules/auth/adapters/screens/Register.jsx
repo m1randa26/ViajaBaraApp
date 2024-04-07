@@ -23,7 +23,7 @@ const Register = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://192.168.0.178:8080/users/', {
+      const response = await fetch('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/user/registro/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,24 +33,24 @@ const Register = ({ navigation }) => {
           email,
           phone,
           password,
-          role_id: 2,
+          role: {
+            id_role: 3,
+            nombre: 'CLIENT_ROLE'
+          }
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        // Registro exitoso
-        Alert.alert('Éxito',
-          'Usuario registrado correctamente',
-          [
-            {
-              text: 'Iniciar sesión',
-              onPress: () => navigation.navigate('Auth'),
-            },
-          ]
-        );
+        Alert.alert('Éxito', 'Usuario registrado correctamente', [
+          {
+            text: 'Iniciar sesión',
+            onPress: () => navigation.navigate('Auth'),
+          },
+        ]);
       } else {
-        // Error al registrar
-        Alert.alert('Error', 'Hubo un problema al registrar el usuario');
+        Alert.alert('Error', data.message || 'Hubo un problema al registrar el usuario');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -59,7 +59,7 @@ const Register = ({ navigation }) => {
   };
 
   const NavigateToAuth = () => {
-    navigation.navigate('Auth'); // Reemplaza 'Auth' con el nombre de tu componente de autenticación
+    navigation.navigate('Auth');
   };
 
   return (

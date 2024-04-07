@@ -1,14 +1,41 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Avatar } from '@rneui/themed';
-import { useNavigation } from '@react-navigation/native'; // Importa el hook useNavigation
+import { useNavigation } from '@react-navigation/native';
 
 const Profile = () => {
-  const navigation = useNavigation(); // Obtiene la navegación
+  const navigation = useNavigation();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Realizar la solicitud al backend para obtener los detalles del usuario
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch('http://192.168.0.178:8080/api/user/1');
+      const data = await response.json();
+      setUserData(data); // Establecer los datos del usuario en el estado
+      setLoading(false); // Cambiar el estado de carga a falso
+    } catch (error) {
+      console.error('Error al obtener los datos del usuario:', error);
+      setLoading(false); // Cambiar el estado de carga a falso en caso de error
+    }
+  };
 
   const handleLogin = () => {
-    navigation.navigate('Auth'); // Navega al componente Auth
+    navigation.navigate('Auth');
   };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#FE1300" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -17,46 +44,45 @@ const Profile = () => {
           <Avatar
             size={120}
             rounded
-            source={{ uri: 'https://cdn.pixabay.com/photo/2021/06/04/10/29/guy-6309462_1280.jpg' }}
-            title="Bj"
+            source={{ uri: userData?.avatar || 'https://cdn.pixabay.com/photo/2021/06/04/10/29/guy-6309462_1280.jpg' }}
+            title={userData?.name || "Bj"}
             containerStyle={{ backgroundColor: 'grey' }}
           >
             <Avatar.Accessory size={40} />
           </Avatar>
 
           <View style={{ marginTop: 24, alignItems: 'center' }}>
-            <Text style={styles.text}>Enrique Copado Vargas</Text>
-            <Text style={styles.text}>+52 777 123 5678</Text>
+            <Text style={styles.text}>{userData?.name}</Text>
+            <Text style={styles.text}>{userData?.phone}</Text>
           </View>
         </View>
       </View>
       <View style={[styles.halfScreen, styles.cardInfo]}>
         <View style={styles.textContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Email:</Text>
-          <Text style={{fontSize: 16, color: '#5E5E5E'}}>enriquevargas@gmail.com</Text>
+          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Email:</Text>
+          <Text style={{ fontSize: 16, color: '#5E5E5E' }}>{userData?.email}</Text>
         </View>
-        <View style={styles.textContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teléfono:</Text>
-          <Text style={{fontSize: 16, color: '#5E5E5E'}}>+52 777 123 5678</Text>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Género:</Text>
-          <Text style={{fontSize: 16, color: '#5E5E5E'}}>Masculino</Text>
-        </View>
+        {/* Agregar más detalles del usuario aquí si es necesario */}
         <TouchableOpacity onPress={handleLogin}>
-           <Text style={styles.loginButton}>Iniciar sesión</Text>
+          <Text style={styles.loginButton}>Iniciar sesión</Text>
         </TouchableOpacity>
       </View>
     </View>
-  )
+  );
 }
 
-export default Profile
+export default Profile;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: '#FE1300'
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#FE1300'
   },
   halfScreen: {

@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
   bus: {
     width: '70%',
     height: '65%',
+    height: '65%',
     backgroundColor: 'white',
     marginTop: 24,
     borderRadius: 40,
@@ -263,8 +264,22 @@ const styles = StyleSheet.create({
   section: {
     width: '20%',
     flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  section: {
+    width: '20%',
+    flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center'
+  },
+  seat: {
+    width: 40,
+    height: 60,
+    borderRadius: 8,
+    backgroundColor: '#88ECA4',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   seat: {
     width: 40,
@@ -282,7 +297,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#22B64B', // Cambia el color cuando el asiento está seleccionado
   },
   seatNumber: {
+  sectionTitle: {
+    fontWeight: 'bold',
+    fontSize: 20
+  },
+  selectedSeat: {
+    backgroundColor: '#22B64B', // Cambia el color cuando el asiento está seleccionado
+  },
+  seatNumber: {
     fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+  boton: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 32,
+    borderColor: '#3DD7FD',
+    borderWidth: 2,
+  },
+  textoBoton: {
+    color: '#3DD7FD',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  disabledButton: {
+    backgroundColor: '#A7A7A7',
+    borderColor: 'gray',
+  },
+  disabledText: {
+    color: 'gray',
     fontWeight: 'bold',
     color: 'white'
   },
@@ -360,4 +405,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }
+}
 });
