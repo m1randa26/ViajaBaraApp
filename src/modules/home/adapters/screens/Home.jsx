@@ -6,13 +6,14 @@ import { SearchBar } from '@rneui/base';
 export default function Home({ navigation }) {
 
   const [viajesData, setViajesData] = useState([]);
+  const [searchTextOrigen, setSearchTextOrigen] = useState('');
+  const [searchTextDestino, setSearchTextDestino] = useState('');
 
   useEffect(() => {
     const fetchViajes = async () => {
       try {
-        const response = await axios.get('http://192.168.100.8:8080/api/viaje/');
+        const response = await axios.get('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/viaje/');
         setViajesData(response.data.data);
-        console.log(response.data.data);
       } catch (error) {
         console.error('Error al obtener los datos', error);
       }
@@ -40,19 +41,22 @@ export default function Home({ navigation }) {
     subtitulo2: 'Llegada: 1:30 pm             Atobus:Van-114',
   };
 
-  const viajes = [
-    { titulo: 'Cuernava-CDMX', subtitulo: 'Salida: 12:00PM           Horarios:L M M J V S D' },
-    { titulo: 'Cuernava-CDMX', subtitulo: 'Salida: 12:00PM           Horarios:L M M J V S D' },
-    { titulo: 'Cuernava-CDMX', subtitulo: 'Salida: 12:00PM           Horarios:L M M J V S D' },
-    { titulo: 'Cuernava-CDMX', subtitulo: 'Salida: 12:00PM           Horarios:L M M J V S D' },
-  ];
-
-  const navigateToDetallesViaje = () => {
-    navigation.navigate('DetallesViaje');
+  const navigateToDetallesViaje = (viaje) => {
+    navigation.navigate('DetallesViaje', { viaje });
   };
 
   const navigateToDetallesPoxViaje = () => {
     navigation.navigate('DetallesPoxViaje');
+  };
+
+  const formatoHora = (hora) => {
+    const partesHora = hora.split(':');
+    const horas = parseInt(partesHora[0]); // Convertir a número entero
+    const minutos = partesHora[1];
+    const ampm = horas >= 12 ? 'pm' : 'am'; // Determinar si es AM o PM
+    const hora12 = horas % 12 || 12; // Convertir a formato de 12 horas
+
+    return `${hora12}:${minutos} ${ampm}`;
   };
 
   return (
@@ -65,12 +69,16 @@ export default function Home({ navigation }) {
               <SearchBar style={{ fontSize: 14 }}
                 platform='android'
                 placeholder='Origen'
+                onChangeText={setSearchTextOrigen}
+                value={searchTextOrigen}
               />
             </View>
             <View style={styles.input}>
               <SearchBar style={{ fontSize: 14 }}
                 platform='android'
                 placeholder='Destino'
+                onChangeText={setSearchTextDestino}
+                value={searchTextDestino}
               />
             </View>
           </View>
@@ -78,14 +86,14 @@ export default function Home({ navigation }) {
 
         <Text style={styles.proximoViajeTitulo}>{proximoViaje.titulo}</Text>
         <TouchableOpacity onPress={navigateToDetallesPoxViaje}>
-        <View style={[styles.cardContainer, style = { marginBottom: 24 }]}>
-          <View style={styles.cardTituloContainer}>
-            <Text style={styles.cardTitulo}>{proximoViaje.destino}</Text>
-            {proximoViaje.pagado && <View style={styles.circuloVerde}></View>}
+          <View style={[styles.cardContainer, style = { marginBottom: 24 }]}>
+            <View style={styles.cardTituloContainer}>
+              <Text style={styles.cardTitulo}>{proximoViaje.destino}</Text>
+              {proximoViaje.pagado && <View style={styles.circuloVerde}></View>}
+            </View>
+            <Text style={styles.subtitulo}>{proximoViaje.subtitulo}</Text>
+            <Text style={styles.subtitulo}>{proximoViaje.subtitulo2}</Text>
           </View>
-          <Text style={styles.subtitulo}>{proximoViaje.subtitulo}</Text>
-          <Text style={styles.subtitulo}>{proximoViaje.subtitulo2}</Text>
-        </View>
         </TouchableOpacity>
       </View>
 
@@ -93,17 +101,36 @@ export default function Home({ navigation }) {
         <ScrollView style={styles.scrollView}>
           <View style={styles.viajesContainer}>
             <Text style={styles.viajesTitulo}>Viajes</Text>
-            {viajesData.map((viaje, index) => (
-              <TouchableOpacity key={index} style={[styles.cardContainer, styles.cardViajes]} onPress={navigateToDetallesViaje}>
-                <Text style={styles.cardTitulo}>{viaje.origen}</Text>
-                <Text style={styles.cardSubtitulo}>
-                  <Text style={{ fontWeight: 'bold' }}>Salida:</Text> 8:00 am
-                </Text>
-                <Text style={styles.cardSubtitulo}>
-                  <Text style={{ fontWeight: 'bold' }}>Llegada:</Text> 9:30 am
-                </Text>
-              </TouchableOpacity>
-            ))}
+            {viajesData
+              .filter(viaje =>
+                viaje.origen.trim().toLowerCase().includes(searchTextOrigen.toLowerCase())
+              )
+              .filter(viaje =>
+                viaje.destino.trim().toLowerCase().includes(searchTextDestino.toLowerCase())
+              )
+              .map((viaje, index) => (
+                <TouchableOpacity key={index} style={[styles.cardContainer, styles.cardViajes]} onPress={() => navigateToDetallesViaje(viaje)}>
+                  <Text style={styles.cardTitulo}>{viaje.origen + " - " + viaje.destino}</Text>
+                  <Text style={styles.cardSubtitulo}>
+                    <Text style={{ fontWeight: 'bold' }}>Salida:</Text> {formatoHora(viaje.horaSalida)}
+                  </Text>
+                  <Text style={styles.cardSubtitulo}>
+                    <Text style={{ fontWeight: 'bold' }}>Llegada:</Text> {formatoHora(viaje.horaLlegada)}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            {viajesData
+              .filter(viaje =>
+                viaje.origen.trim().toLowerCase().includes(searchTextOrigen.toLowerCase())
+              )
+              .filter(viaje =>
+                viaje.destino.trim().toLowerCase().includes(searchTextDestino.toLowerCase())
+              )
+              .length === 0 && (
+                <View style={{ height: 150, justifyContent: 'center' }}>
+                  <Text style={styles.noResultsText}>No se encontraron resultados.</Text>
+                </View>
+              )}
           </View>
         </ScrollView>
       </View>
@@ -230,5 +257,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingVertical: 20,
     paddingHorizontal: 12
+  },
+  noResultsText: {
+    fontSize: 18,
+    textAlign: 'center',
   }
 });
