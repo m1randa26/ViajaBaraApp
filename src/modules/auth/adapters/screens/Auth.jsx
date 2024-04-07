@@ -7,7 +7,7 @@ const Auth = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.0.178:8080/api/auth/signin', {
+      const response = await fetch('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ const Auth = ({ navigation }) => {
       });
 
       const data = await response.json();
-
+      console.log(data);
       if (response.ok) {
         // Si la autenticación es exitosa, navegar al componente Home
         navigation.navigate('Home');

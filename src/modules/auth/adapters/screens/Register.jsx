@@ -23,7 +23,7 @@ const Register = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://192.168.0.178:8080/api/user/registro/', {
+      const response = await fetch('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/user/registro/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +33,10 @@ const Register = ({ navigation }) => {
           email,
           phone,
           password,
-          role_id: 3,
+          role: {
+            id_role: 3,
+            nombre: 'CLIENT_ROLE'
+          }
         }),
       });
 
