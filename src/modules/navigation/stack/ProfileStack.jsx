@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Profile from '../../profile/adapters/screens/Profile';
 import Auth from '../../auth/adapters/screens/Auth';
 import Register from '../../auth/adapters/screens/Register';
+import HomeCon from '../../home/adapters/screens/HomeCon';
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,20 @@ const ProfileStack = () => {
             <Stack.Screen
             name='Register'
             component={Register}
+            options={{
+                title: 'Crear cuenta',
+                headerStyle: {
+                    backgroundColor: '#fd1400'
+                },
+                headerTitleStyle: {
+                    color: 'white'
+                },
+                headerTintColor: 'white'
+            }}
+            />
+            <Stack.Screen
+            name='HomeCon'
+            component={HomeCon}
             options={{
                 title: 'Crear cuenta',
                 headerStyle: {
