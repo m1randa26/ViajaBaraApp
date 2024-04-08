@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Auth = ({ navigation }) => {
+const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
+  const [onSuccessCallback, setOnSuccessCallback] = useState(null);
 
   const handleLogin = async () => {
     try {
@@ -21,8 +25,13 @@ const Auth = ({ navigation }) => {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
-        // Si la autenticación es exitosa, navegar al componente Home
-        navigation.navigate('Home');
+        const userRole = data.data.role.id_role;
+        console.log('id_role:', userRole);
+        await AsyncStorage.setItem('userData', JSON.stringify(data.data));
+        if (onSuccessCallback) {
+          onSuccessCallback(data);
+        }
+        navigation.navigate('Profile');
       } else {
         Alert.alert('Error', 'Correo electrónico o contraseña incorrectos');
       }

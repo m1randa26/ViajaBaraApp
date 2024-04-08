@@ -1,41 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Avatar } from '@rneui/themed';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Realizar la solicitud al backend para obtener los detalles del usuario
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
-      const response = await fetch('http://192.168.0.178:8080/api/user/1');
-      const data = await response.json();
-      setUserData(data); // Establecer los datos del usuario en el estado
-      setLoading(false); // Cambiar el estado de carga a falso
+      const userStorageData = await AsyncStorage.getItem('userData');
+      if (userStorageData) {
+        const userData = JSON.parse(userStorageData);
+        const loggedInUser = userData.user;
+        setUserData(loggedInUser);
+      }
+      setLoading(false);
     } catch (error) {
       console.error('Error al obtener los datos del usuario:', error);
-      setLoading(false); // Cambiar el estado de carga a falso en caso de error
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData, isFocused]);
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('userData');
+      setUserData(null);
+      Alert.alert('Éxito', 'Sesión cerrada correctamente');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      Alert.alert('Error', 'Hubo un problema al cerrar sesión');
     }
   };
 
   const handleLogin = () => {
     navigation.navigate('Auth');
   };
-
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#FE1300" />
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -62,27 +69,24 @@ const Profile = () => {
           <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Email:</Text>
           <Text style={{ fontSize: 16, color: '#5E5E5E' }}>{userData?.email}</Text>
         </View>
-        {/* Agregar más detalles del usuario aquí si es necesario */}
-        <TouchableOpacity onPress={handleLogin}>
-          <Text style={styles.loginButton}>Iniciar sesión</Text>
-        </TouchableOpacity>
+        {userData ? (
+          <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.logoutButton}>Cerrar sesión</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={handleLogin}>
+            <Text style={styles.loginButton}>Iniciar sesión</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
 }
 
-export default Profile;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#FE1300'
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#FE1300'
   },
   halfScreen: {
@@ -112,9 +116,16 @@ const styles = StyleSheet.create({
     marginTop: 16,
     justifyContent: 'space-between'
   },
+  logoutButton: {
+    marginTop: 16,
+    color: '#3DD7FD',
+    fontSize: 20,
+  },
   loginButton: {
-    marginTop: 32,
+    marginTop: 16,
     color: '#3DD7FD',
     fontSize: 20,
   },
 });
+
+export default Profile;
