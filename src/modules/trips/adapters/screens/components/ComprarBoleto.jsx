@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Modal, Image } from 'react-native'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -9,8 +9,16 @@ const ComprarBoleto = ({ route, navigation }) => {
   const { ticketCount, idViaje } = route.params;
 
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [seatData, setSeatData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
+
+  useEffect(() => {
+    fetch('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/')
+      .then((response) => response.json())
+      .then((data) => setSeatData(data))
+      .catch((error) => console.log('Error en el fetching: ', error));
+  }, []);
 
   const handleSeatPress = (seatNumber) => {
     if (selectedSeats.includes(seatNumber)) {
@@ -19,6 +27,7 @@ const ComprarBoleto = ({ route, navigation }) => {
     } else if (selectedSeats.length < ticketCount) {
       // Si aún no se han seleccionado suficientes asientos, agregar el asiento a la lista de asientos seleccionados
       setSelectedSeats([...selectedSeats, seatNumber]);
+      console.log(seatData);
     } else {
       Toast.show({
         type: 'error',
