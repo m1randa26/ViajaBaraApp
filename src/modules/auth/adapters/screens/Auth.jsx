@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,10 +23,9 @@ const Auth = () => {
       });
 
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
-        const userRole = data.data.role.id_role;
-        console.log('id_role:', userRole);
+        const name = data.data.user.name;
+        console.log(name);
         await AsyncStorage.setItem('userData', JSON.stringify(data.data));
         if (onSuccessCallback) {
           onSuccessCallback(data);

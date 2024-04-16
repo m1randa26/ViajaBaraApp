@@ -10,7 +10,7 @@ export default function Trips() {
   ];
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Historial de Viajes</Text>
+      <Text style={styles.titulo}>Mis viajes</Text>
       <ScrollView>
         {Trips.map(viaje => (
           <View key={viaje.id} style={styles.tarjeta}>

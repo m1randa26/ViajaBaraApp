@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity, Modal, Image } from 'react-native'
 import React, { useState } from 'react';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const ComprarBoleto = ({ route, navigation }) => {
 
-  const { ticketCount } = route.params;
+  const { ticketCount, idViaje } = route.params;
 
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -31,8 +33,8 @@ const ComprarBoleto = ({ route, navigation }) => {
 
 
   const handleButtonPress = () => {
-    console.log('Botón presionado');
-    console.log('Asientos seleccionados:', selectedSeats);
+    // console.log('Botón presionado');
+    // console.log('Asientos seleccionados:', selectedSeats);
     setModalVisible(true);
   };
 
@@ -40,10 +42,37 @@ const ComprarBoleto = ({ route, navigation }) => {
     setModalVisible(false);
   }
 
-  const confirmarCompra = () => {
-    setModalVisible(false);
-    setModalVisible2(true);
-  }
+  const confirmarCompra = async () => {
+
+    try {
+      const userDataString = await AsyncStorage.getItem('userData');
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const idUsuario = userData.user.id_user;
+
+        const data = {
+          idUsuario: idUsuario,
+          asientos: selectedSeats,
+          idViaje: idViaje
+        }
+
+        const response = await axios.post('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/buy', data);
+
+        if (response.status === 200) {
+          setModalVisible(false);
+          setModalVisible2(true);
+        } else {
+          console.log('Error en la compra');
+        }
+
+      } else {
+        console.log("No se encontró datos del usuario");
+      }
+    } catch (error) {
+      console.log('Error al obtener los datos', error);
+    }
+
+  };
 
   const accept = () => {
     setModalVisible2(false);
@@ -297,6 +326,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#22B64B', // Cambia el color cuando el asiento está seleccionado
   },
   seatNumber: {
+  },
   sectionTitle: {
     fontWeight: 'bold',
     fontSize: 20
@@ -405,5 +435,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }
-}
 });

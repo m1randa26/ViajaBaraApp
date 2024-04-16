@@ -62,7 +62,8 @@ export default function DetallesViaje({ navigation, route }) {
   const handleContinue = () => {
     console.log(`Continuar a otra pantalla con ${ticketCount} boletos`);
     setModalVisible(false);
-    navigation.navigate('ComprarBoleto', { ticketCount });
+    const idViaje = viaje.idViaje;
+    navigation.navigate('ComprarBoleto', { ticketCount, idViaje });
     // navigation.navigate('OtraPantalla', { ticketCount });
     // Asegúrate de tener acceso a la navegación, ya sea a través de props o mediante el uso de useNavigation hook
   };
