@@ -1,12 +1,9 @@
-
 import Navigation from './src/modules/navigation/Navigation';
-import Toast from 'react-native-toast-message';
+import React from 'react';
+import 'react-native-gesture-handler';
 
 export default function App() {
   return (
-    <>
-      <Navigation/>
-      <Toast />
-    </>
+      <Navigation /> 
   );
 }

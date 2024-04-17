@@ -1,8 +1,49 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Avatar } from '@rneui/themed';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const PerfilCon = () => {
+const ProfileCon = () => {
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchUserData = useCallback(async () => {
+    try {
+      const userStorageData = await AsyncStorage.getItem('userData');
+      if (userStorageData) {
+        const userData = JSON.parse(userStorageData);
+        const loggedInUser = userData.user;
+        setUserData(loggedInUser);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos del usuario:', error);
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData, isFocused]);
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('userData');
+      setUserData(null);
+      Alert.alert('Éxito', 'Sesión cerrada correctamente');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      Alert.alert('Error', 'Hubo un problema al cerrar sesión');
+    }
+  };
+
+  const handleLogin = () => {
+    navigation.navigate('Auth');
+  };
+
   return (
     <View style={styles.container}>
       <View style={[styles.halfScreen, styles.info]}>
@@ -10,38 +51,37 @@ const PerfilCon = () => {
           <Avatar
             size={120}
             rounded
-            source={{ uri: 'https://cdn.pixabay.com/photo/2021/06/04/10/29/guy-6309462_1280.jpg' }}
-            title="Bj"
+            source={{ uri: userData?.avatar || 'https://cdn.pixabay.com/photo/2021/06/04/10/29/guy-6309462_1280.jpg' }}
+            title={userData?.name || "Bj"}
             containerStyle={{ backgroundColor: 'grey' }}
           >
             <Avatar.Accessory size={40} />
           </Avatar>
 
           <View style={{ marginTop: 24, alignItems: 'center' }}>
-            <Text style={styles.text}>Enrique Copado Vargas</Text>
-            <Text style={styles.text}>+52 777 123 5678</Text>
+            <Text style={styles.text}>{userData?.name}</Text>
+            <Text style={styles.text}>{userData?.phone}</Text>
           </View>
         </View>
       </View>
       <View style={[styles.halfScreen, styles.cardInfo]}>
         <View style={styles.textContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Email:</Text>
-          <Text style={{fontSize: 16, color: '#5E5E5E'}}>enriquevargas@gmail.com</Text>
+          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Email:</Text>
+          <Text style={{ fontSize: 16, color: '#5E5E5E' }}>{userData?.email}</Text>
         </View>
-        <View style={styles.textContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teléfono:</Text>
-          <Text style={{fontSize: 16, color: '#5E5E5E'}}>+52 777 123 5678</Text>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Género:</Text>
-          <Text style={{fontSize: 16, color: '#5E5E5E'}}>Masculino</Text>
-        </View>
+        {userData ? (
+          <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.logoutButton}>Cerrar sesión</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={handleLogin}>
+            <Text style={styles.loginButton}>Iniciar sesión</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
-  )
+  );
 }
-
-export default PerfilCon
 
 const styles = StyleSheet.create({
   container: {
@@ -75,5 +115,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 16,
     justifyContent: 'space-between'
-  }
-})
+  },
+  logoutButton: {
+    marginTop: 16,
+    color: '#3DD7FD',
+    fontSize: 20,
+  },
+  loginButton: {
+    marginTop: 16,
+    color: '#3DD7FD',
+    fontSize: 20,
+  },
+});
+
+export default ProfileCon;

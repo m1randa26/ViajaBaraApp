@@ -1,14 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Auth = () => {
+const Auth = ({ setUserRole }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
-  const [onSuccessCallback, setOnSuccessCallback] = useState(null);
-
+  console.log("setUserRole en Auth:", setUserRole);
   const handleLogin = async () => {
     try {
       const response = await fetch('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/auth/signin', {
@@ -18,19 +17,20 @@ const Auth = () => {
         },
         body: JSON.stringify({
           email,
-          password
+          password     
         }),
       });
 
       const data = await response.json();
       if (response.ok) {
-        const name = data.data.user.name;
-        console.log(name);
+        // Guardar los datos del usuario en AsyncStorage
         await AsyncStorage.setItem('userData', JSON.stringify(data.data));
-        if (onSuccessCallback) {
-          onSuccessCallback(data);
-        }
-        navigation.navigate('Profile');
+        
+        // Obtener el id_role del usuario desde los datos guardados en AsyncStorage
+        const idRole = data.data.role.id_role;
+        
+        // Establecer el rol del usuario
+        setUserRole(idRole);
       } else {
         Alert.alert('Error', 'Correo electrónico o contraseña incorrectos');
       }

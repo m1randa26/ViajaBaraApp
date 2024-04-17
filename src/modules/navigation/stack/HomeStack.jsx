@@ -67,7 +67,6 @@ const HomeStack = () => {
             }}
             />
             
-            
         </Stack.Navigator>
     );
 }

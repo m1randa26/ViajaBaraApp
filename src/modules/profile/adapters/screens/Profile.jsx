@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { Avatar } from '@rneui/themed';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -32,7 +32,8 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('userData');
-      setUserData(null);
+      
+      navigation.navigate('AuthStack'); // Redirigir a la pantalla de inicio de sesión
       Alert.alert('Éxito', 'Sesión cerrada correctamente');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
@@ -41,7 +42,7 @@ const Profile = () => {
   };
 
   const handleLogin = () => {
-    navigation.navigate('Auth');
+    navigation.navigate('AuthStack'); // Redirigir a la pantalla de inicio de sesión
   };
 
   return (

@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Profile from '../../profile/adapters/screens/Profile';
-import PerfillCon from '../../profile/adapters/screens/PerfilCon';
+import Profile from '../../profile/adapters/screens/PerfilCon';
+import Auth from '../../auth/adapters/screens/Auth';
+import Register from '../../auth/adapters/screens/Register';
 
 const Stack = createStackNavigator();
 
@@ -10,8 +11,8 @@ const PerfilConStack = () => {
   return (
     <Stack.Navigator initialRouteName="UserGuest">
       <Stack.Screen
-        name="PerfilCon"
-        component={PerfillCon}
+        name="PerfilConStack"
+        component={PerfilConStack}
         options={
           {
             title: 'Perfil',
@@ -25,6 +26,34 @@ const PerfilConStack = () => {
           }
         }
       />
+      <Stack.Screen
+            name='Auth'
+            component={Auth}
+            options={{
+                title: 'inicio de sesion',
+                headerStyle: {
+                    backgroundColor: '#fd1400'
+                },
+                headerTitleStyle: {
+                    color: 'white'
+                },
+                headerTintColor: 'white'
+            }}
+            />
+            <Stack.Screen
+            name='Register'
+            component={Register}
+            options={{
+                title: 'Crear cuenta',
+                headerStyle: {
+                    backgroundColor: '#fd1400'
+                },
+                headerTitleStyle: {
+                    color: 'white'
+                },
+                headerTintColor: 'white'
+            }}
+            />
     </Stack.Navigator>
   )
 }
