@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Avatar } from '@rneui/themed';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -32,8 +32,7 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('userData');
-      
-      navigation.navigate('AuthStack'); // Redirigir a la pantalla de inicio de sesión
+      setUserData(null);
       Alert.alert('Éxito', 'Sesión cerrada correctamente');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
@@ -42,7 +41,7 @@ const Profile = () => {
   };
 
   const handleLogin = () => {
-    navigation.navigate('AuthStack'); // Redirigir a la pantalla de inicio de sesión
+    navigation.navigate('Auth');
   };
 
   return (
@@ -60,7 +59,7 @@ const Profile = () => {
           </Avatar>
 
           <View style={{ marginTop: 24, alignItems: 'center' }}>
-            <Text style={styles.text}>{userData?.name}</Text>
+            <Text style={styles.nameTitle}>{userData?.name}</Text>
             <Text style={styles.text}>{userData?.phone}</Text>
           </View>
         </View>
@@ -104,6 +103,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     paddingTop: 20,
+  },
+  nameTitle: {
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    textTransform: 'uppercase'
   },
   text: {
     fontSize: 16,

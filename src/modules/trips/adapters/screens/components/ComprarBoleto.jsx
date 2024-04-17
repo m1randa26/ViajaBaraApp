@@ -12,12 +12,40 @@ const ComprarBoleto = ({ route, navigation }) => {
   const [seatData, setSeatData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
+  const [modalVisible3, setModalVisible3] = useState(false);
+
+  const checkDisponibilidad = (data) => {
+    if (data.every((item) => item.disponible === false)) {
+      setModalVisible3(true);
+
+      setTimeout(() => {
+        navigation.pop();
+      }, 2000);
+    }
+  };
 
   useEffect(() => {
-    fetch('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/')
-      .then((response) => response.json())
-      .then((data) => setSeatData(data))
-      .catch((error) => console.log('Error en el fetching: ', error));
+
+    const fetchSeats = async () => {
+      try {
+        const response = await axios.get(`http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/viaje/${idViaje}`);
+        const data = response.data.data.map(ticket => ({
+          idTicket: ticket.idTicket,
+          disponible: ticket.disponible,
+          asiento: ticket.asiento
+        }));
+
+        setSeatData(data);
+
+        checkDisponibilidad(data);
+
+      } catch (error) {
+        console.log('Error al obtener los datos: ', error);
+      }
+    }
+
+    fetchSeats();
+
   }, []);
 
   const handleSeatPress = (seatNumber) => {
@@ -27,7 +55,6 @@ const ComprarBoleto = ({ route, navigation }) => {
     } else if (selectedSeats.length < ticketCount) {
       // Si aún no se han seleccionado suficientes asientos, agregar el asiento a la lista de asientos seleccionados
       setSelectedSeats([...selectedSeats, seatNumber]);
-      console.log(seatData);
     } else {
       Toast.show({
         type: 'error',
@@ -109,80 +136,75 @@ const ComprarBoleto = ({ route, navigation }) => {
       <View style={styles.bus}>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>A</Text>
-          <TouchableOpacity onPress={() => handleSeatPress(1)} style={[styles.seat, selectedSeats.includes(1) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(5)} style={[styles.seat, selectedSeats.includes(5) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>5</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(9)} style={[styles.seat, selectedSeats.includes(9) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>9</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(13)} style={[styles.seat, selectedSeats.includes(13) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>13</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(17)} style={[styles.seat, selectedSeats.includes(17) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>17</Text>
-          </TouchableOpacity>
+          {seatData.slice(0, 5).map((seat) => (
+            <TouchableOpacity
+              key={seat.idTicket}
+              onPress={() => handleSeatPress(seat.asiento)}
+              style={[
+                styles.seat,
+                selectedSeats.includes(seat.idTicket) && styles.selectedSeat,
+                !seat.disponible && styles.disabledSeat,
+              ]}
+              disabled={!seat.disponible}
+            >
+              <Text style={styles.seatNumber}>{seat.asiento}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>B</Text>
-          <TouchableOpacity onPress={() => handleSeatPress(2)} style={[styles.seat, selectedSeats.includes(2) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>2</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(6)} style={[styles.seat, selectedSeats.includes(6) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>6</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(10)} style={[styles.seat, selectedSeats.includes(10) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>10</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(14)} style={[styles.seat, selectedSeats.includes(14) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>14</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(18)} style={[styles.seat, selectedSeats.includes(18) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>18</Text>
-          </TouchableOpacity>
+          {seatData.slice(5, 10).map((seat) => (
+            <TouchableOpacity
+              key={seat.idTicket}
+              onPress={() => handleSeatPress(seat.asiento)}
+              style={[
+                styles.seat,
+                selectedSeats.includes(seat.idTicket) && styles.selectedSeat,
+                !seat.disponible && styles.disabledSeat,
+              ]}
+              disabled={!seat.disponible}
+            >
+              <Text style={styles.seatNumber}>{seat.asiento}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
         <View style={styles.section}>
 
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>C</Text>
-          <TouchableOpacity onPress={() => handleSeatPress(3)} style={[styles.seat, selectedSeats.includes(3) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>3</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(7)} style={[styles.seat, selectedSeats.includes(7) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>7</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(11)} style={[styles.seat, selectedSeats.includes(11) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>11</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(15)} style={[styles.seat, selectedSeats.includes(15) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>15</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(19)} style={[styles.seat, selectedSeats.includes(19) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>19</Text>
-          </TouchableOpacity>
+          {seatData.slice(10, 15).map((seat) => (
+            <TouchableOpacity
+              key={seat.idTicket}
+              onPress={() => handleSeatPress(seat.asiento)}
+              style={[
+                styles.seat,
+                selectedSeats.includes(seat.idTicket) && styles.seat,
+                !seat.disponible && styles.disabledSeat,
+              ]}
+              disabled={!seat.disponible}
+            >
+              <Text style={styles.seatNumber}>{seat.asiento}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>D</Text>
-          <TouchableOpacity onPress={() => handleSeatPress(4)} style={[styles.seat, selectedSeats.includes(4) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>4</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(8)} style={[styles.seat, selectedSeats.includes(8) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>8</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(12)} style={[styles.seat, selectedSeats.includes(12) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>12</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(16)} style={[styles.seat, selectedSeats.includes(16) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>16</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSeatPress(20)} style={[styles.seat, selectedSeats.includes(20) && styles.selectedSeat]}>
-            <Text style={styles.seatNumber}>20</Text>
-          </TouchableOpacity>
+          {seatData.slice(15, 20).map((seat) => (
+            <TouchableOpacity
+              key={seat.idTicket}
+              onPress={() => handleSeatPress(seat.asiento)}
+              style={[
+                styles.seat,
+                selectedSeats.includes(seat.idTicket) && styles.selectedSeat,
+                !seat.disponible && styles.disabledSeat,
+              ]}
+              disabled={!seat.disponible}
+            >
+              <Text style={styles.seatNumber}>{seat.asiento}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
-
       </View>
       <TouchableOpacity
         onPress={handleButtonPress}
@@ -248,6 +270,32 @@ const ComprarBoleto = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible3}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <View>
+              <Image
+                source={require('../../../../../../assets/alert.png')}
+                style={styles.img}
+              />
+            </View>
+            <View style={{ width: 250, alignItems: 'center', marginTop: 24 }}>
+              <Text style={styles.textWarning}>Viaje no disponible</Text>
+              <Text style={styles.textAlert}>Lo sentimos. Ya no hay asientos disponibles para este viaje.</Text>
+              <TouchableOpacity style={styles.buttonAlert}>
+                <Text style={styles.buttonText}>Aceptar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   )
 }
@@ -262,6 +310,28 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 24
+  },
+  img: {
+    width: 80,
+    height: 80
+  },
+  textWarning: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#935d19',
+    marginBottom: 8
+  },
+  textAlert: {
+    color: '#a37525'
+  },
+  buttonAlert: {
+    width: 120,
+    padding: 15,
+    borderRadius: 4,
+    marginTop: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f9c000'
   },
   statusContainer: {
     flexDirection: 'row',
@@ -282,8 +352,7 @@ const styles = StyleSheet.create({
   },
   bus: {
     width: '70%',
-    height: '65%',
-    height: '65%',
+    height: '60%',
     backgroundColor: 'white',
     marginTop: 24,
     borderRadius: 40,
@@ -317,14 +386,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#88ECA4',
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  seat: {
-    width: 40,
-    height: 60,
-    borderRadius: 8,
-    backgroundColor: '#88ECA4',
-    justifyContent: 'center',
     alignItems: 'center'
   },
   sectionTitle: {
@@ -339,9 +400,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontWeight: 'bold',
     fontSize: 20
-  },
-  selectedSeat: {
-    backgroundColor: '#22B64B', // Cambia el color cuando el asiento está seleccionado
   },
   seatNumber: {
     fontSize: 16,
@@ -377,6 +435,10 @@ const styles = StyleSheet.create({
     marginTop: 32,
     borderColor: '#3DD7FD',
     borderWidth: 2,
+  },
+  disabledSeat: {
+    backgroundColor: 'gray',
+    opacity: 0.5, // Opacidad reducida para indicar que el asiento está deshabilitado
   },
   textoBoton: {
     color: '#3DD7FD',

@@ -1,44 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, RefreshControl, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { SearchBar } from '@rneui/base';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home({ navigation }) {
 
   const [viajesData, setViajesData] = useState([]);
   const [searchTextOrigen, setSearchTextOrigen] = useState('');
   const [searchTextDestino, setSearchTextDestino] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const [firstTrip, setFirstTrip] = useState(null);
+  const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchViajes = async () => {
-      try {
-        const response = await axios.get('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/viaje/');
-        setViajesData(response.data.data);
-      } catch (error) {
-        console.error('Error al obtener los datos', error);
+  const fetchViajes = async () => {
+    try {
+      const response = await axios.get('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/viaje/');
+      setViajesData(response.data.data);
+
+      const userDataString = await AsyncStorage.getItem('userData');
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const id = userData.user.id_user;
+        setUsername(userData.user.name);
+
+        const responseTrip = await axios.get(`http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/user/${id}`);
+
+        if (responseTrip && responseTrip.data) {
+          setFirstTrip(responseTrip.data);
+        }
+
+        console.log(firstTrip);
       }
-    };
 
-    fetchViajes();
-
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchViajes();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  const usuario = {
-    nombre: 'Enrique Copado',
-    fotoPerfilURL: 'https://via.placeholder.com/500x300',
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error('Error al obtener los datos', error);
+    }
   };
 
-  const proximoViaje = {
-    titulo: 'Próximo Viaje',
-    destino: 'Cuernava - CDMX       Pagado',
-    pagado: true,
-    subtitulo: 'Salida: 12:00 pm              Asiento:A14',
-    subtitulo2: 'Llegada: 1:30 pm             Atobus:Van-114',
+  const fetchDataOnFocus = () => {
+    fetchViajes();
+  };
+
+  useEffect(() => {
+    fetchViajes();
+    const unsubscribeFocus = navigation.addListener('focus', fetchDataOnFocus);
+
+    return () => {
+      unsubscribeFocus();
+    };
+  }, [navigation]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchViajes().finally(() => setRefreshing(false));
   };
 
   const navigateToDetallesViaje = (viaje) => {
@@ -59,11 +77,15 @@ export default function Home({ navigation }) {
     return `${hora12}:${minutos} ${ampm}`;
   };
 
+  if (loading) {
+    return <ActivityIndicator size="large" color="gray" />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={{ padding: 15 }}>
         <View style={styles.busqueda}>
-          <Text style={styles.nombreUsuario}>Bienvenido Enrique</Text>
+          <Text style={styles.nombreUsuario}>{'Bienvenido ' + username}</Text>
           <View style={styles.containerSearch}>
             <View style={[styles.input, style = { marginRight: 8 }]}>
               <SearchBar style={{ fontSize: 14 }}
@@ -84,21 +106,23 @@ export default function Home({ navigation }) {
           </View>
         </View>
 
-        <Text style={styles.proximoViajeTitulo}>{proximoViaje.titulo}</Text>
-        <TouchableOpacity onPress={navigateToDetallesPoxViaje}>
+        <Text style={styles.proximoViajeTitulo}>Próximo Viaje</Text>
+        <TouchableOpacity disabled={true}>
           <View style={[styles.cardContainer, style = { marginBottom: 24 }]}>
             <View style={styles.cardTituloContainer}>
-              <Text style={styles.cardTitulo}>{proximoViaje.destino}</Text>
-              {proximoViaje.pagado && <View style={styles.circuloVerde}></View>}
+              <Text style={styles.cardTitulo}>{firstTrip.data[0].viaje.origen + " - " + firstTrip.data[0].viaje.destino}</Text>
             </View>
-            <Text style={styles.subtitulo}>{proximoViaje.subtitulo}</Text>
-            <Text style={styles.subtitulo}>{proximoViaje.subtitulo2}</Text>
+            <Text style={styles.subtitulo}>{"Salida: " + formatoHora(firstTrip.data[0].viaje.horaSalida)}</Text>
+            <Text style={styles.subtitulo}>{"Llegada: " + formatoHora(firstTrip.data[0].viaje.horaLlegada)}</Text>
           </View>
         </TouchableOpacity>
       </View>
 
       <View style={styles.backgroundCard}>
-        <ScrollView style={styles.scrollView}>
+        <ScrollView style={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           <View style={styles.viajesContainer}>
             <Text style={styles.viajesTitulo}>Viajes</Text>
             {viajesData

@@ -31,6 +31,7 @@ const Auth = ({ setUserRole }) => {
         
         // Establecer el rol del usuario
         setUserRole(idRole);
+        navigation.pop();
       } else {
         Alert.alert('Error', 'Correo electrónico o contraseña incorrectos');
       }
