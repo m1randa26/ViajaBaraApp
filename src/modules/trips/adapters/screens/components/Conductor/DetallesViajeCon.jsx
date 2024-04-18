@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity,Modal } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 
-export default function DetallesViajeCon({ navigation }) {
-    const [showAlert, setShowAlert] = useState(false);
-    
+export default function DetallesViajeCon({ navigation, route }) {
+  const [showAlert, setShowAlert] = useState(false);
+
+  const { viaje } = route.params;
 
   const navigateToPaseLista = () => {
     navigation.navigate('PaseLista');
@@ -15,29 +16,49 @@ export default function DetallesViajeCon({ navigation }) {
     setShowAlert(false);
   };
 
+  const formatoHora = (hora) => {
+    const partesHora = hora.split(':');
+    const horas = parseInt(partesHora[0]); // Convertir a número entero
+    const minutos = partesHora[1];
+    const ampm = horas >= 12 ? 'pm' : 'am'; // Determinar si es AM o PM
+    const hora12 = horas % 12 || 12; // Convertir a formato de 12 horas
+
+    return `${hora12}:${minutos} ${ampm}`;
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Image
-        source={{ uri: 'https://via.placeholder.com/500x300' }}
+        source={{ uri: viaje.imagenDestino }}
         style={styles.imagen}
       />
       <View style={styles.contenido}>
-        <Text style={styles.titulo}>Ciudad de México</Text>
+        <Text style={styles.titulo}>{viaje.destino}</Text>
         <Text style={styles.descripcion}>
-          La Ciudad de México es uno de los destinos más ricos y fascinantes del mundo, no solo por ser una de las tres principales ciudades con el mayor número de museos.
+          {viaje.descripcionDestino}
         </Text>
         <View style={styles.contenedorTitulo}>
           <Text style={styles.subtitulo}>Información del viaje</Text>
           <View style={styles.lineaHorizontal}></View>
         </View>
         <View style={styles.lista}>
-          <Text style={styles.listaItem}>Origen: Cuernavaca </Text>
-          <Text style={styles.listaItem}>Destino: Ciudad de Mexico</Text>
-          <Text style={styles.listaItem}>Salida: 12:00 PM</Text>
-          <Text style={styles.listaItem}>Llegada: 1:30pm</Text>
-          <Text style={styles.listaItem}>Asiento: A14</Text>
-          <Text style={styles.listaItem}>Autobús: Van-114</Text>
+          <Text style={styles.listaItem}>
+            <Text style={{ fontWeight: 'bold' }}>Origen:</Text> {viaje.origen}
+          </Text>
+          <Text style={styles.listaItem}>
+            <Text style={{ fontWeight: 'bold' }}>Destino:</Text> {viaje.destino}
+          </Text>
+          <Text style={styles.listaItem}>
+            <Text style={{ fontWeight: 'bold' }}>Salida:</Text> {formatoHora(viaje.horaSalida)}
+          </Text>
+          <Text style={styles.listaItem}>
+            <Text style={{ fontWeight: 'bold' }}>Llegada:</Text> {formatoHora(viaje.horaLlegada)}
+          </Text>
+          <Text style={styles.listaItem}>
+            <Text style={{ fontWeight: 'bold' }}>Horarios:</Text> {viaje.horarios}
+          </Text>
         </View>
+        {/*
         <Text style={styles.subtitulo}>Escalas del autobús</Text>
         <View style={styles.lista}>
           <View style={styles.itemLista}>
@@ -56,20 +77,21 @@ export default function DetallesViajeCon({ navigation }) {
             <Text style={styles.textoLista}>AV. Paseo de la Reforma CDMX</Text>
           </View>
 
-        </View>
+        </View> 
+        */}
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 19.4326,
-            longitude: -99.1332,
+            latitude: viaje.latitudDestino,
+            longitude: viaje.longitudDestino,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
         >
           <Marker
-            coordinate={{ latitude: 19.4326, longitude: -99.1332 }}
-            title="Ciudad de México"
-            description="Destino"
+            coordinate={{ latitude: viaje.latitudDestino, longitude: viaje.longitudDestino }}
+            title={viaje.destino}
+            description="Destino del viaje"
           />
         </MapView>
 
@@ -238,7 +260,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     width: 120,
-    
+
   },
   alertButtonText: {
     color: 'white',

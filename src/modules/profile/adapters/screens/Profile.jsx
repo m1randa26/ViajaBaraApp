@@ -32,7 +32,8 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('userData');
-      setUserData(null);
+      
+      navigation.navigate('AuthStack');
       Alert.alert('Éxito', 'Sesión cerrada correctamente');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
@@ -41,7 +42,7 @@ const Profile = () => {
   };
 
   const handleLogin = () => {
-    navigation.navigate('Auth');
+    navigation.navigate('AuthStack');
   };
 
   return (

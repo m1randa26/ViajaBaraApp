@@ -25,13 +25,13 @@ export default function Home({ navigation }) {
         const id = userData.user.id_user;
         setUsername(userData.user.name);
 
-        const responseTrip = await axios.get(`http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/user/${id}`);
+        //const responseTrip = await axios.get(`http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/user/${id}`);
 
-        if (responseTrip && responseTrip.data) {
+        /*if (responseTrip && responseTrip.data) {
           setFirstTrip(responseTrip.data);
-        }
+        }*/
 
-        console.log(firstTrip);
+        //console.log(firstTrip);
       }
 
       setLoading(false);
@@ -106,16 +106,7 @@ export default function Home({ navigation }) {
           </View>
         </View>
 
-        <Text style={styles.proximoViajeTitulo}>Próximo Viaje</Text>
-        <TouchableOpacity disabled={true}>
-          <View style={[styles.cardContainer, style = { marginBottom: 24 }]}>
-            <View style={styles.cardTituloContainer}>
-              <Text style={styles.cardTitulo}>{firstTrip.data[0].viaje.origen + " - " + firstTrip.data[0].viaje.destino}</Text>
-            </View>
-            <Text style={styles.subtitulo}>{"Salida: " + formatoHora(firstTrip.data[0].viaje.horaSalida)}</Text>
-            <Text style={styles.subtitulo}>{"Llegada: " + formatoHora(firstTrip.data[0].viaje.horaLlegada)}</Text>
-          </View>
-        </TouchableOpacity>
+        
       </View>
 
       <View style={styles.backgroundCard}>

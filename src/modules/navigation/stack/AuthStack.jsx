@@ -17,7 +17,11 @@ const AuthStack = ({ navigation, route }) => {
   }, [navigation, setUserRole]);
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+      gestureEnabled: false,
+    }}>
       <Stack.Screen
         name="Auth"
         // Pasar setUserRole como prop al componente Auth

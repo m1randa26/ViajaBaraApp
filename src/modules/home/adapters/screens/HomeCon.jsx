@@ -1,49 +1,71 @@
-import React from 'react';
-import { StyleSheet, Text, View, ScrollView,TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeCon({ navigation }) {
+  const [viajesData, setViajesData] = useState([]);
+  const [username, setUsername] = useState('');
 
-  const conductor = {
-    nombre: 'Juan Pérez',
-    fotoPerfilURL: 'https://via.placeholder.com/500x300',
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userStorageData = await AsyncStorage.getItem('userData');
+        if (userStorageData) {
+          const userData = JSON.parse(userStorageData);
+          const id = userData.user.id_user;
+          setUsername(userData.user.name);
+          const response = await axios.get(`http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/viaje/conductor/${id}`); // Mandar el id del conductor que inicio sesion
+          setViajesData(response.data.data);
+        }
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); // Llama a la función para realizar la solicitud cuando el componente se monte
+  }, []);
+
+  const navigateToDetallesViajeCon = (viaje) => {
+    navigation.navigate('DetallesViajeCon', { viaje });
   };
 
-  const proximoViaje = {
-    titulo: 'Próximo Viaje',
-    destino: 'Cuernavaca - Ciudad de México  ',
-    enCurso: true,
-    subtitulo: 'Salida: 12:00 pm              Asiento:A14',
-    subtitulo2: 'Llegada: 1:30 pm             Autobús:Van-114',
-  };
+  const formatoHora = (hora) => {
+    const partesHora = hora.split(':');
+    const horas = parseInt(partesHora[0]); // Convertir a número entero
+    const minutos = partesHora[1];
+    const ampm = horas >= 12 ? 'pm' : 'am'; // Determinar si es AM o PM
+    const hora12 = horas % 12 || 12; // Convertir a formato de 12 horas
 
-  const navigateToDetallesViajeCon = () => {
-    navigation.navigate('DetallesViajeCon');
+    return `${hora12}:${minutos} ${ampm}`;
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.perfilContainer}>
-        <Text style={styles.nombreUsuario}>Bienvenido {conductor.nombre}</Text>
+        <Text style={styles.nombreUsuario}>Bienvenido {username} </Text>
       </View>
 
-      <Text style={styles.proximoViajeTitulo}>{proximoViaje.titulo}</Text>
-      <TouchableOpacity onPress={navigateToDetallesViajeCon}>
-        <View style={styles.cardContainer}>
-          <View style={styles.cardTituloContainer}>
-            <Text style={styles.cardTitulo}>{proximoViaje.destino}</Text>
-            {proximoViaje.enCurso && <View style={styles.circuloVerde}></View>}
+      <Text style={styles.proximoViajeTitulo}>Próximos Viajes</Text>
+
+      {viajesData.map((viaje, index) => (
+        <TouchableOpacity key={index} onPress={() => navigateToDetallesViajeCon(viaje)}>
+          <View style={styles.cardContainer}>
+            <Image style={styles.imagenDestino} source={{ uri: viaje.imagenDestino }} />
+            <Text style={styles.cardTitulo}>{viaje.origen} - {viaje.destino}</Text>
+            <Text style={styles.subtitulo}>Hora de salida: {formatoHora(viaje.horaSalida)}</Text>
+            <Text style={styles.subtitulo}>Hora de llegada: {formatoHora(viaje.horaLlegada)}</Text>
           </View>
-          <Text style={styles.subtitulo}>{proximoViaje.subtitulo}</Text>
-          <Text style={styles.subtitulo}>{proximoViaje.subtitulo2}</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 20,
   },
   perfilContainer: {
@@ -57,12 +79,13 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginTop: 5,
+    marginBottom: 10,
   },
   cardContainer: {
     backgroundColor: 'white',
     borderRadius: 8,
     padding: 20,
-    marginTop: 24,
+    marginTop: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -72,24 +95,20 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
-  cardTituloContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   cardTitulo: {
     fontSize: 16,
-    color: 'red',
     fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 5,
   },
-  circuloVerde: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: 'green',
-    marginLeft: 10,
+  imagenDestino: {
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+    marginBottom: 10,
   },
   subtitulo: {
     fontSize: 14,
-    marginTop: 10,
+    marginBottom: 5,
   },
 });

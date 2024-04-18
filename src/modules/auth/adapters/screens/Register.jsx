@@ -34,8 +34,8 @@ const Register = ({ navigation }) => {
           phone,
           password,
           role: {
-            id_role: 2,
-            nombre: 'DRIVER_ROLE'
+            id_role: 3,
+            nombre: 'CLIENT_ROLE'
           }
         }),
       });
