@@ -3,16 +3,16 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 
-export default function PassengerList({ navigation }) {
+export default function PassengerList({ navigation, route }) {
   const [pasajeros, setPasajeros] = useState([]);
   const [checkedStatus, setCheckedStatus] = useState({});
 
-
+  const { viaje } = route.params;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/lista/1');
+        const response = await axios.get(`http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/lista/${viaje.idViaje}`);
         const data = response.data.data.map(pasajero => ({ ...pasajero, isChecked: false }));
         setPasajeros(data);
       } catch (error) {

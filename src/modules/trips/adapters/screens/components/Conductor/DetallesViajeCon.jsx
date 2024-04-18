@@ -7,8 +7,8 @@ export default function DetallesViajeCon({ navigation, route }) {
 
   const { viaje } = route.params;
 
-  const navigateToPaseLista = () => {
-    navigation.navigate('PaseLista');
+  const navigateToPaseLista = (viaje) => {
+    navigation.navigate('PaseLista', { viaje });
   };
 
   const handleConfirm = () => {
@@ -95,7 +95,7 @@ export default function DetallesViajeCon({ navigation, route }) {
           />
         </MapView>
 
-        <TouchableOpacity style={styles.botonPase} onPress={navigateToPaseLista}>
+        <TouchableOpacity style={styles.botonPase} onPress={() => navigateToPaseLista(viaje)}>
           <Text style={styles.textoBotonPase}>Pase de Lista</Text>
         </TouchableOpacity>
 

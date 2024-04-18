@@ -5,6 +5,7 @@ import {
 import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import Toast, { ErrorToast } from 'react-native-toast-message';
+import axios from 'axios';
 
 export default function DetallesViaje({ navigation, route }) {
 
@@ -12,6 +13,7 @@ export default function DetallesViaje({ navigation, route }) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [ticketCount, setTicketCount] = useState(1);
+  const [contador, setContador] = useState(0);
 
   const toastConfig = {
     error: (props) => (
@@ -27,12 +29,27 @@ export default function DetallesViaje({ navigation, route }) {
     )
   };
 
-  const handleButtonPress = () => {
-    setModalVisible(true);
+  const handleButtonPress = async () => {
+    try {
+      const response = await axios.get(`http://apivibaa-env.eba-gpupsjpx.us-east-1.elasticbeanstalk.com/api/tickets/viaje/${viaje.idViaje}`);
+      const tickets = response.data.data;
+
+      let ticketsAvailable = 0;
+      tickets.forEach(ticket => {
+        if (ticket.disponible) {
+          ticketsAvailable++;
+        }
+      });
+
+      setContador(ticketsAvailable);
+      setModalVisible(true);
+    } catch (error) {
+      console.log('Error al obtener los datos: ', error);
+    }
   }
 
   const handleIncrement = () => {
-    if (ticketCount < 20) { // Limita el conteo máximo a 3 boletos
+    if (ticketCount < contador) { // Limita el conteo máximo a 3 boletos
       setTicketCount(ticketCount + 1);
     } else {
       Toast.show({

@@ -179,7 +179,7 @@ const ComprarBoleto = ({ route, navigation }) => {
               onPress={() => handleSeatPress(seat.asiento)}
               style={[
                 styles.seat,
-                selectedSeats.includes(seat.idTicket) && styles.seat,
+                selectedSeats.includes(seat.idTicket) && styles.selectedSeat,
                 !seat.disponible && styles.disabledSeat,
               ]}
               disabled={!seat.disponible}
